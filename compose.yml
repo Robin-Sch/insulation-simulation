@@ -1,0 +1,7 @@
+services:
+  insulation-simulation:
+    container_name: insulation-simulation
+    image: ghcr.io/robin-sch/insulation-simulation:latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
