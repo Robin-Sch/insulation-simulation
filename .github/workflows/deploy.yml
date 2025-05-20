@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,7 +46,10 @@ jobs:
         run: npm next telemetry disable
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --save-dev
+
+      - name: Check eslint
+        run: npm run lint
 
       - name: Build with Next.js
         run: npx --no-install next build

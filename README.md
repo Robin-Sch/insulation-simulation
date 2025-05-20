@@ -5,7 +5,7 @@ This is a simple project that shows different types of (waste) insulation and th
 
 ### Development
 
-First, run the development server using `npm run dev`, then open [http://localhost:3000](http://localhost:3000) with your bwoser to see the website.
+First install the dependencies using `npm install --save-dev` and then start the server using `npm run dev`. You can now open [http://localhost:3000](http://localhost:3000) and it will show the website.
 
 You can start editing the page by modifiying `app/page.tsx`. This page auto-updates as you edit the file.
 
