@@ -10,7 +10,7 @@ export const INSULATION_TYPES = {
     conductivity: 0.037,
   },
   mw: {
-    name: 'Mineral Wool (MW)',
+    name: 'Mineral Wool',
     color: '#E53935', // Red
     conductivity: 0.043, // Average of 0.040–0.045
   },
@@ -48,6 +48,11 @@ export const INSULATION_TYPES = {
     name: 'Cellulose (Blown)',
     color: '#5D4037', // Dark brown
     conductivity: 0.04,
+  },
+  celluloseWet: {
+    name: 'Cellulose (Spray)',
+    color: '#00695C', // Deep teal
+    conductivity: 0,
   },
   pet: {
     name: 'PET Flakes/Fibers',

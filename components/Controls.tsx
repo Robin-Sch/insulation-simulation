@@ -62,10 +62,11 @@ export default function Controls({
           {INSULATION_TYPES[material].name}
         </p>
         <p className="text-sm text-gray-700">
-          Conductivity:{' '}
+          λ={' '}
           <span className="font-semibold">
             {INSULATION_TYPES[material].conductivity}
-          </span>
+          </span>{' '}
+          W/mK
         </p>
       </div>
     </>
