@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { INSULATION_TYPES, InsulationMaterial } from '@/lib/constants';
+import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import { HeatSimulation } from './HeatSimulation';
 
 export function House({
   material,
   thickness,
 }: {
-  material: InsulationMaterial;
+  material: InsulationType;
   thickness: number;
 }) {
   const houseSize = { width: 2, height: 2, depth: 2 };

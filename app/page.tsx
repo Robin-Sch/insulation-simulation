@@ -6,10 +6,10 @@ import { Canvas } from '@react-three/fiber';
 
 import Controls from '@/components/Controls';
 import { House } from '@/components/House';
-import { InsulationMaterial } from '@/lib/constants';
+import { InsulationType } from '@/lib/constants';
 
 export default function Simulation() {
-  const [material, setMaterial] = useState<InsulationMaterial>('fiberglass');
+  const [material, setMaterial] = useState<InsulationType>('eps');
   const [thickness, setThickness] = useState(10); // in cm
 
   return (
@@ -23,7 +23,7 @@ export default function Simulation() {
         />
       </div>
 
-      <Canvas>
+      <Canvas camera={{ position: [3, 3, 3] }}>
         <OrbitControls />
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
@@ -33,7 +33,7 @@ export default function Simulation() {
         <OrbitControls
           enableZoom={true}
           autoRotate={true}
-          autoRotateSpeed={0.5}
+          autoRotateSpeed={1}
         />
       </Canvas>
     </div>
