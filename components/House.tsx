@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import { HeatSimulation } from "./HeatSimulation";
-import { INSULATION_TYPES, InsulationMaterial } from "@/lib/constants";
+import { INSULATION_TYPES, InsulationMaterial } from '@/lib/constants';
+import { HeatSimulation } from './HeatSimulation';
 
 export function House({
   material,

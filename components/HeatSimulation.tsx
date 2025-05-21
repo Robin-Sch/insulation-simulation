@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Color, DoubleSide, Mesh, ShaderMaterial } from "three";
+import React, { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { Color, DoubleSide, Mesh, ShaderMaterial } from 'three';
 
 export function HeatSimulation({ conductivity }: { conductivity: number }) {
   const ref = useRef<Mesh>(null!);

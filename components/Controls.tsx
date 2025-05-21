@@ -1,4 +1,4 @@
-import { INSULATION_TYPES, InsulationMaterial } from "@/lib/constants";
+import { INSULATION_TYPES, InsulationMaterial } from '@/lib/constants';
 
 type ControlsProps = {
   material: InsulationMaterial;

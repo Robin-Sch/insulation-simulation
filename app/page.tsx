@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import React, { useState } from 'react';
+import { OrbitControls } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
 
-import Controls from "@/components/Controls";
-import { House } from "@/components/House";
-import { InsulationMaterial } from "@/lib/constants";
+import Controls from '@/components/Controls';
+import { House } from '@/components/House';
+import { InsulationMaterial } from '@/lib/constants';
 
 export default function Simulation() {
-  const [material, setMaterial] = useState<InsulationMaterial>("fiberglass");
+  const [material, setMaterial] = useState<InsulationMaterial>('fiberglass');
   const [thickness, setThickness] = useState(10); // in cm
 
   return (
