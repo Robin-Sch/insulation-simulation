@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
       - name: Disable Telemetry
-        run: npm next telemetry disable
+        run: npx next telemetry disable
 
       - name: Install dependencies
         run: npm ci --save-dev
