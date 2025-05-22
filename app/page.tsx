@@ -8,6 +8,7 @@ import Controls from '@/components/Controls';
 import { House } from '@/components/House';
 import { InsulationType } from '@/lib/constants';
 import { HeatSimulation } from '@/components/HeatSimulation';
+import Grid from '@/components/Grid';
 
 export default function Simulation() {
   const [material, setMaterial] = useState<InsulationType>('eps');
@@ -58,19 +59,12 @@ export default function Simulation() {
 
         <OrbitControls
           enableZoom={true}
-          autoRotate={true}
-          autoRotateSpeed={1}
+          // autoRotate={true}
+          // autoRotateSpeed={1}
         />
 
         <Stats />
-
-        {grid && (
-          <>
-            <gridHelper args={[5, 5]} rotation={[Math.PI / 2, 0, 0]} />
-            <gridHelper args={[5, 5]} rotation={[0, Math.PI / 2, 0]} />
-            <gridHelper args={[5, 5]} rotation={[0, 0, Math.PI / 2]} />
-          </>
-        )}
+        <Grid enabled={grid} />
       </Canvas>
     </div>
   );

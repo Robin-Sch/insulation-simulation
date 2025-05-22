@@ -14,6 +14,31 @@ import {
   InsulationType,
 } from '@/lib/constants';
 
+function insideHouse(
+  x: number,
+  y: number,
+  z: number,
+  houseSize: { width: number; height: number; depth: number }
+) {
+  const w = houseSize.width / 2;
+  const h = houseSize.height / 2;
+  const d = houseSize.depth / 2;
+  return -w <= x && x <= w && -d <= y && y <= d && -h <= z && z <= h;
+}
+
+function insideHouseOrInsulation(
+  x: number,
+  y: number,
+  z: number,
+  houseSize: { width: number; height: number; depth: number },
+  thickness: number
+) {
+  const w = houseSize.width / 2 + thickness / 2 / 100;
+  const h = houseSize.height / 2 + thickness / 2 / 100;
+  const d = houseSize.depth / 2 + thickness / 2 / 100;
+  return -w <= x && x <= w && -d <= y && y <= d && -h <= z && z <= h;
+}
+
 export function HeatSimulation({
   houseSize,
   yPlane,
@@ -32,8 +57,8 @@ export function HeatSimulation({
   const meshRef = useRef<Mesh>(null);
   const [heatData, setHeatData] = useState<number[][]>([]);
   const [insulationConductivity, setIC] = useState<number>(0);
-  const size = 5; // Size of the plane
-  const heatIntensity = 5;
+  const size = 4; // Size of the plane
+  const heatIntensity = 1;
 
   // Determine conductivity at a specific grid point
   const getConductivityAtPoint = (x: number, z: number): number => {
@@ -41,32 +66,16 @@ export function HeatSimulation({
     const worldX = (x / resolution) * size - size / 2;
     const worldZ = (z / resolution) * size - size / 2;
 
-    // If inside house
-    const halfWidth = houseSize.width / 2;
-    const halfHeight = houseSize.height / 2;
-    const halfDepth = houseSize.depth / 2;
-    if (
-      -halfWidth <= worldX &&
-      worldX <= halfWidth &&
-      -halfDepth <= yPlane &&
-      yPlane <= halfDepth &&
-      -halfHeight <= worldZ &&
-      worldZ <= halfHeight
-    ) {
-      return airConductivity;
-    }
+    if (insideHouse(worldX, yPlane, worldZ, houseSize)) return airConductivity;
 
-    // If inside insulation
-    const insulationWidth = halfWidth + insulationThickness / 2 / 100;
-    const insulationHeight = halfHeight + insulationThickness / 2 / 100;
-    const insulationDepth = halfDepth + insulationThickness / 2 / 100;
     if (
-      -insulationWidth <= worldX &&
-      worldX <= insulationWidth &&
-      -insulationDepth <= yPlane &&
-      yPlane <= insulationDepth &&
-      -insulationHeight <= worldZ &&
-      worldZ <= insulationHeight
+      insideHouseOrInsulation(
+        worldX,
+        yPlane,
+        worldZ,
+        houseSize,
+        insulationThickness
+      )
     ) {
       return insulationConductivity;
     }
@@ -75,56 +84,30 @@ export function HeatSimulation({
     return airConductivity;
   };
 
-  // Initialize heat data with central heat source
-  useEffect(() => {
-    setIC(INSULATION_TYPES[insulationMaterial].conductivity);
+  useFrame(() => {
+    if (!meshRef.current || heatData.length === 0) return;
 
-    const data: number[][] = [];
-    const centerX = Math.floor(resolution / 2);
-    const centerZ = Math.floor(resolution / 2);
+    if (enabled) {
+      const newData = heatData.map((row) => [...row]);
 
-    for (let x = 0; x < resolution; x++) {
-      data[x] = [];
-      for (let z = 0; z < resolution; z++) {
-        // Set heat source in center
-        if (x === centerX && z === centerZ) {
-          data[x][z] = heatIntensity;
-        } else {
-          data[x][z] = 0; // Cold everywhere else
+      for (let x = 1; x < resolution - 1; x++) {
+        for (let z = 1; z < resolution - 1; z++) {
+          const k = getConductivityAtPoint(x, z);
+
+          const dT_up = heatData[x][z] - heatData[x + 1][z];
+          const dT_down = heatData[x][z] - heatData[x - 1][z];
+          const dT_left = heatData[x][z] - heatData[x][z + 1];
+          const dT_right = heatData[x][z] - heatData[x][z - 1];
+          const dT = dT_up + dT_down + dT_left + dT_right;
+          const dX = resolution * size;
+
+          // -k * deltaT / deltaX
+          newData[x][z] = (-k * dT) / dX + heatData[x][z];
         }
       }
+
+      setHeatData(newData);
     }
-    setHeatData(data);
-  }, [yPlane, insulationMaterial, insulationThickness, resolution]);
-
-  // Solve heat equation with central source
-  useFrame(() => {
-    if (!meshRef.current || heatData.length === 0 || !enabled) return;
-
-    const newData = heatData.map((row) => [...row]);
-    const centerX = Math.floor(resolution / 2);
-    const centerZ = Math.floor(resolution / 2);
-
-    // Diffuse heat from center
-    for (let x = 1; x < resolution - 1; x++) {
-      for (let z = 1; z < resolution - 1; z++) {
-        // Skip the center point (constant heat source)
-        if (x === centerX && z === centerZ) continue;
-
-        const conductivity = getConductivityAtPoint(x, z);
-
-        newData[x][z] =
-          conductivity *
-            (heatData[x + 1][z] +
-              heatData[x - 1][z] +
-              heatData[x][z + 1] +
-              heatData[x][z - 1] -
-              4 * heatData[x][z]) +
-          heatData[x][z];
-      }
-    }
-
-    setHeatData(newData);
 
     // Update visualization
     const geometry = meshRef.current.geometry as BufferGeometry;
@@ -139,9 +122,9 @@ export function HeatSimulation({
         const idx = (x * resolution + z) * 3;
 
         // Set color (blue to red gradient)
-        colors[idx] = newData[x][z]; // R
+        colors[idx] = heatData[x][z]; // R
         colors[idx + 1] = 0; // G
-        colors[idx + 2] = 1 - newData[x][z]; // B
+        colors[idx + 2] = 1 - heatData[x][z]; // B
       }
     }
 
@@ -167,6 +150,38 @@ export function HeatSimulation({
 
     meshRef.current.geometry = geometry;
   }, [resolution]);
+
+  // Initialize heat data with central heat source
+  useEffect(() => {
+    setIC(INSULATION_TYPES[insulationMaterial].conductivity);
+    const data: number[][] = [];
+
+    for (let x = 0; x < resolution; x++) {
+      data[x] = [];
+      for (let z = 0; z < resolution; z++) {
+        // Convert grid coordinates to world coordinates
+        const worldX = (x / resolution) * size - size / 2;
+        const worldZ = (z / resolution) * size - size / 2;
+
+        if (insideHouse(worldX, yPlane, worldZ, houseSize))
+          data[x][z] = heatIntensity;
+        else if (
+          insideHouseOrInsulation(
+            worldX,
+            yPlane,
+            worldZ,
+            houseSize,
+            insulationThickness
+          )
+        ) {
+          data[x][z] = heatIntensity * 0.5; // TODO: use some kind of gradient
+        } else {
+          data[x][z] = 0;
+        }
+      }
+    }
+    setHeatData(data);
+  }, [houseSize, yPlane, insulationMaterial, insulationThickness, resolution]);
 
   return (
     <>
