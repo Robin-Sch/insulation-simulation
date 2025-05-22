@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 
 import Controls from '@/components/Controls';
@@ -12,6 +12,7 @@ export default function Simulation() {
   const [material, setMaterial] = useState<InsulationType>('eps');
   const [thickness, setThickness] = useState<number>(10); // in cm
   const [yPlane, setYPlane] = useState<number>(0.7);
+  const [resolution, setResolution] = useState<number>(30);
   const [grid, setGrid] = useState<boolean>(false);
 
   return (
@@ -24,6 +25,8 @@ export default function Simulation() {
           setThickness={setThickness}
           yPlane={yPlane}
           setYPlane={setYPlane}
+          resolution={resolution}
+          setResolution={setResolution}
           grid={grid}
           setGrid={setGrid}
         />
@@ -33,13 +36,20 @@ export default function Simulation() {
         <ambientLight intensity={2} />
         {/* <pointLight position={[3, 3, 3]} /> */}
 
-        <House yPlane={yPlane} material={material} thickness={thickness} />
+        <House
+          yPlane={yPlane}
+          material={material}
+          thickness={thickness}
+          resolution={resolution}
+        />
 
         <OrbitControls
           enableZoom={true}
           autoRotate={true}
           autoRotateSpeed={1}
         />
+
+        <Stats />
 
         {grid && (
           <>

@@ -7,6 +7,8 @@ type ControlsProps = {
   setThickness: (thickness: number) => void;
   yPlane: number;
   setYPlane: (zHeight: number) => void;
+  resolution: number;
+  setResolution: (resolution: number) => void;
   grid: boolean;
   setGrid: (grid: boolean) => void;
 };
@@ -18,6 +20,8 @@ export default function Controls({
   setThickness,
   yPlane,
   setYPlane,
+  resolution,
+  setResolution,
   grid,
   setGrid,
 }: ControlsProps) {
@@ -79,6 +83,26 @@ export default function Controls({
         <div className="flex justify-between text-xs mt-1">
           <span>-1</span>
           <span>1</span>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex justify-between items-center mb-2">
+          <label className="block text-sm font-medium">Resolution</label>
+          <span className="text-sm font-semibold">{resolution}</span>
+        </div>
+        <input
+          type="range"
+          min="5"
+          max="100"
+          step="1"
+          value={resolution}
+          onChange={(e) => setResolution(parseFloat(e.target.value))}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+        />
+        <div className="flex justify-between text-xs mt-1">
+          <span>5</span>
+          <span>100</span>
         </div>
       </div>
 

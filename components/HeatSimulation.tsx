@@ -14,16 +14,17 @@ export function HeatSimulation({
   yPlane,
   insulationConductivity,
   insulationThickness,
+  resolution,
 }: {
   houseSize: { width: number; height: number; depth: number };
   yPlane: number;
   insulationConductivity: number;
   insulationThickness: number;
+  resolution: number;
 }) {
   const meshRef = useRef<Mesh>(null);
   const [heatData, setHeatData] = useState<number[][]>([]);
   const size = 5; // Size of the plane
-  const resolution = 30; // Grid resolution
   const heatIntensity = 5;
 
   // Determine conductivity at a specific grid point
@@ -84,7 +85,7 @@ export function HeatSimulation({
       }
     }
     setHeatData(data);
-  }, [yPlane, insulationConductivity, insulationThickness, heatIntensity]);
+  }, [yPlane, insulationConductivity, insulationThickness, resolution]);
 
   // Solve heat equation with central source
   useFrame(() => {
@@ -158,7 +159,7 @@ export function HeatSimulation({
     geometry.setAttribute('color', new BufferAttribute(colors, 3));
 
     meshRef.current.geometry = geometry;
-  }, []);
+  }, [resolution]);
 
   return (
     <>

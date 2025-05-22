@@ -7,10 +7,12 @@ export function House({
   yPlane,
   material,
   thickness,
+  resolution,
 }: {
   yPlane: number;
   material: InsulationType;
   thickness: number;
+  resolution: number;
 }) {
   const houseSize = { width: 1.5, height: 1.5, depth: 1.5 };
   const insulationProps = INSULATION_TYPES[material];
@@ -50,6 +52,7 @@ export function House({
         houseSize={houseSize}
         insulationConductivity={insulationProps.conductivity}
         insulationThickness={thickness}
+        resolution={resolution}
       />
     </group>
   );
