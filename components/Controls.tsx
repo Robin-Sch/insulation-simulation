@@ -126,7 +126,7 @@ export default function Controls({
       <div className="mt-4">
         <button
           onClick={() => setEnabled(!enabled)}
-          className={`px-4 py-2 bg-${enabled ? 'red' : 'blue'}-600 text-white rounded-md hover:bg-${enabled ? 'red' : 'blue'}-700 focus:outline-none`}
+          className={`${enabled ? 'bg-red-600' : 'bg-blue-600'} ${enabled ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded`}
         >
           {enabled ? 'Stop simulation' : 'Start simulation'}
         </button>

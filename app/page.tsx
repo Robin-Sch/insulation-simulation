@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { OrbitControls, Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 
@@ -18,7 +18,11 @@ export default function Simulation() {
   const [grid, setGrid] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
 
-  const houseSize = { width: 1.5, height: 1.5, depth: 1.5 };
+  // useMemo to make sure we don't (unncessary) change object reference on each render
+  const houseSize = useMemo(
+    () => ({ width: 1.5, height: 1.5, depth: 1.5 }),
+    []
+  );
 
   return (
     <div className="relative w-full h-screen">
