@@ -12,9 +12,9 @@ import Grid from '@/components/Grid';
 
 export default function Simulation() {
   const [material, setMaterial] = useState<InsulationType>('eps');
-  const [thickness, setThickness] = useState<number>(10); // in cm
+  const [thickness, setThickness] = useState<number>(30); // in cm
   const [yPlane, setYPlane] = useState<number>(0.7);
-  const [resolution, setResolution] = useState<number>(30);
+  const [resolution, setResolution] = useState<number>(50);
   const [grid, setGrid] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
 
@@ -40,14 +40,9 @@ export default function Simulation() {
       </div>
 
       <Canvas camera={{ position: [3, 3, 3] }}>
-        <ambientLight intensity={2} />
-        {/* <pointLight position={[3, 3, 3]} /> */}
+        <ambientLight intensity={3} />
 
-        <House
-          houseSize={houseSize}
-          material={material}
-          thickness={thickness}
-        />
+        <House houseSize={houseSize} thickness={thickness} />
         <HeatSimulation
           yPlane={yPlane}
           houseSize={houseSize}
@@ -59,8 +54,8 @@ export default function Simulation() {
 
         <OrbitControls
           enableZoom={true}
-          // autoRotate={true}
-          // autoRotateSpeed={1}
+          autoRotate={true}
+          autoRotateSpeed={1}
         />
 
         <Stats />

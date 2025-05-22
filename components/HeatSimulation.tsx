@@ -23,7 +23,9 @@ function insideHouse(
   const w = houseSize.width / 2;
   const h = houseSize.height / 2;
   const d = houseSize.depth / 2;
-  return -w <= x && x <= w && -d <= y && y <= d && -h <= z && z <= h;
+  // -w <= x <= w && -h <= y <= h && -d <= z <= d
+  // makes sure x, y and z coordinates are within the cube
+  return -w <= x && x <= w && -h <= y && y <= h && -d <= z && z <= d;
 }
 
 function insideHouseOrInsulation(
@@ -36,6 +38,8 @@ function insideHouseOrInsulation(
   const w = houseSize.width / 2 + thickness / 2 / 100;
   const h = houseSize.height / 2 + thickness / 2 / 100;
   const d = houseSize.depth / 2 + thickness / 2 / 100;
+  // -w <= x <= w && -h <= y <= h && -d <= z <= d
+  // makes sure x, y and z coordinates are within the insulation cube
   return -w <= x && x <= w && -d <= y && y <= d && -h <= z && z <= h;
 }
 
@@ -99,7 +103,7 @@ export function HeatSimulation({
           const dT_left = heatData[x][z] - heatData[x][z + 1];
           const dT_right = heatData[x][z] - heatData[x][z - 1];
           const dT = dT_up + dT_down + dT_left + dT_right;
-          const dX = resolution * size;
+          const dX = size;
 
           // -k * deltaT / deltaX
           newData[x][z] = (-k * dT) / dX + heatData[x][z];
@@ -154,10 +158,12 @@ export function HeatSimulation({
   // Initialize heat data with central heat source
   useEffect(() => {
     setIC(INSULATION_TYPES[insulationMaterial].conductivity);
-    const data: number[][] = [];
+    // resolution x resolution array with 0's
+    const data: number[][] = new Array(resolution)
+      .fill(0)
+      .map(() => new Array(resolution).fill(0));
 
     for (let x = 0; x < resolution; x++) {
-      data[x] = [];
       for (let z = 0; z < resolution; z++) {
         // Convert grid coordinates to world coordinates
         const worldX = (x / resolution) * size - size / 2;
@@ -175,8 +181,6 @@ export function HeatSimulation({
           )
         ) {
           data[x][z] = heatIntensity * 0.5; // TODO: use some kind of gradient
-        } else {
-          data[x][z] = 0;
         }
       }
     }

@@ -72,7 +72,7 @@ export default function Controls({
 
       <div>
         <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium">Z height</label>
+          <label className="block text-sm font-medium">Y height</label>
           <span className="text-sm font-semibold">{yPlane}</span>
         </div>
         <input
