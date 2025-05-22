@@ -1,5 +1,5 @@
 {
-  "name": "4cblw00-19",
+  "name": "insulation-simulation",
   "version": "1.0.0",
   "scripts": {
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev --turbopack",

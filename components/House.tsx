@@ -10,7 +10,7 @@ export function House({
   material: InsulationType;
   thickness: number;
 }) {
-  const houseSize = { width: 2, height: 2, depth: 2 };
+  const houseSize = { width: 1.5, height: 1.5, depth: 1.5 };
   const insulationProps = INSULATION_TYPES[material];
 
   return (
@@ -19,7 +19,7 @@ export function House({
         <boxGeometry
           args={[houseSize.width, houseSize.height, houseSize.depth]}
         />
-        <meshStandardMaterial color="#ff0000" roughness={0.8} />
+        <meshStandardMaterial color="#ffffff" roughness={0.8} />
       </mesh>
 
       <mesh>
@@ -38,7 +38,11 @@ export function House({
         />
       </mesh>
 
-      <HeatSimulation conductivity={insulationProps.conductivity} />
+      <HeatSimulation
+        houseSize={houseSize}
+        insulationConductivity={insulationProps.conductivity}
+        insulationThickness={thickness}
+      />
     </group>
   );
 }
