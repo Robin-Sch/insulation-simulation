@@ -5,6 +5,10 @@ type ControlsProps = {
   setMaterial: (type: InsulationType) => void;
   thickness: number;
   setThickness: (thickness: number) => void;
+  yPlane: number;
+  setYPlane: (zHeight: number) => void;
+  grid: boolean;
+  setGrid: (grid: boolean) => void;
 };
 
 export default function Controls({
@@ -12,6 +16,10 @@ export default function Controls({
   setMaterial,
   thickness,
   setThickness,
+  yPlane,
+  setYPlane,
+  grid,
+  setGrid,
 }: ControlsProps) {
   return (
     <>
@@ -52,6 +60,39 @@ export default function Controls({
           <span>10cm</span>
           <span>100cm</span>
         </div>
+      </div>
+
+      <div>
+        <div className="flex justify-between items-center mb-2">
+          <label className="block text-sm font-medium">Z height</label>
+          <span className="text-sm font-semibold">{yPlane}</span>
+        </div>
+        <input
+          type="range"
+          min="-1"
+          max="1"
+          step="0.1"
+          value={yPlane}
+          onChange={(e) => setYPlane(parseFloat(e.target.value))}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+        />
+        <div className="flex justify-between text-xs mt-1">
+          <span>-1</span>
+          <span>1</span>
+        </div>
+      </div>
+
+      <div className="flex items-center mt-4">
+        <input
+          type="checkbox"
+          id="show-grid"
+          checked={grid}
+          onChange={(e) => setGrid(e.target.checked)}
+          className="h-4 w-4 border-gray-300 rounded"
+        />
+        <label htmlFor="show-grid" className="ml-2 block text-sm">
+          Show Grid
+        </label>
       </div>
 
       <div

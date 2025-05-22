@@ -11,10 +11,12 @@ import { airConductivity } from '@/lib/constants';
 
 export function HeatSimulation({
   houseSize,
+  yPlane,
   insulationConductivity,
   insulationThickness,
 }: {
   houseSize: { width: number; height: number; depth: number };
+  yPlane: number;
   insulationConductivity: number;
   insulationThickness: number;
 }) {
@@ -25,10 +27,9 @@ export function HeatSimulation({
   const heatIntensity = 5;
 
   // Determine conductivity at a specific grid point
-  const getConductivityAtPoint = (x: number, y: number, z: number): number => {
+  const getConductivityAtPoint = (x: number, z: number): number => {
     // Convert grid coordinates to world coordinates
     const worldX = (x / resolution) * size - size / 2;
-    const worldY = (y / resolution) * size - size / 2;
     const worldZ = (z / resolution) * size - size / 2;
 
     // If inside house
@@ -38,10 +39,10 @@ export function HeatSimulation({
     if (
       -halfWidth <= worldX &&
       worldX <= halfWidth &&
-      -halfHeight <= worldY &&
-      worldY <= halfHeight &&
-      -halfDepth <= worldZ &&
-      worldZ <= halfDepth
+      -halfDepth <= yPlane &&
+      yPlane <= halfDepth &&
+      -halfHeight <= worldZ &&
+      worldZ <= halfHeight
     ) {
       return airConductivity;
     }
@@ -53,10 +54,10 @@ export function HeatSimulation({
     if (
       -insulationWidth <= worldX &&
       worldX <= insulationWidth &&
-      -insulationHeight <= worldY &&
-      worldY <= insulationHeight &&
-      -insulationDepth <= worldZ &&
-      worldZ <= insulationDepth
+      -insulationDepth <= yPlane &&
+      yPlane <= insulationDepth &&
+      -insulationHeight <= worldZ &&
+      worldZ <= insulationHeight
     ) {
       return insulationConductivity;
     }
@@ -69,21 +70,21 @@ export function HeatSimulation({
   useEffect(() => {
     const data: number[][] = [];
     const centerX = Math.floor(resolution / 2);
-    const centerY = Math.floor(resolution / 2);
+    const centerZ = Math.floor(resolution / 2);
 
     for (let x = 0; x < resolution; x++) {
       data[x] = [];
-      for (let y = 0; y < resolution; y++) {
+      for (let z = 0; z < resolution; z++) {
         // Set heat source in center
-        if (x === centerX && y === centerY) {
-          data[x][y] = heatIntensity;
+        if (x === centerX && z === centerZ) {
+          data[x][z] = heatIntensity;
         } else {
-          data[x][y] = 0; // Cold everywhere else
+          data[x][z] = 0; // Cold everywhere else
         }
       }
     }
     setHeatData(data);
-  }, [insulationConductivity, insulationThickness, heatIntensity]);
+  }, [yPlane, insulationConductivity, insulationThickness, heatIntensity]);
 
   // Solve heat equation with central source
   useFrame(() => {
@@ -91,27 +92,27 @@ export function HeatSimulation({
 
     const newData = heatData.map((row) => [...row]);
     const centerX = Math.floor(resolution / 2);
-    const centerY = Math.floor(resolution / 2);
+    const centerZ = Math.floor(resolution / 2);
 
     // Keep center at constant heat
-    newData[centerX][centerY] = heatIntensity;
+    newData[centerX][centerZ] = heatIntensity;
 
     // Diffuse heat from center
     for (let x = 1; x < resolution - 1; x++) {
-      for (let y = 1; y < resolution - 1; y++) {
+      for (let z = 1; z < resolution - 1; z++) {
         // Skip the center point (constant heat source)
-        if (x === centerX && y === centerY) continue;
+        if (x === centerX && z === centerZ) continue;
 
-        const conductivity = getConductivityAtPoint(x, y, resolution / 2);
+        const conductivity = getConductivityAtPoint(x, z);
 
-        newData[x][y] =
+        newData[x][z] =
           conductivity *
-            (heatData[x + 1][y] +
-              heatData[x - 1][y] +
-              heatData[x][y + 1] +
-              heatData[x][y - 1] -
-              4 * heatData[x][y]) +
-          heatData[x][y];
+            (heatData[x + 1][z] +
+              heatData[x - 1][z] +
+              heatData[x][z + 1] +
+              heatData[x][z - 1] -
+              4 * heatData[x][z]) +
+          heatData[x][z];
       }
     }
 
@@ -126,13 +127,13 @@ export function HeatSimulation({
     const colors = colorAttribute.array as Float32Array;
 
     for (let x = 0; x < resolution; x++) {
-      for (let y = 0; y < resolution; y++) {
-        const idx = (x * resolution + y) * 3;
+      for (let z = 0; z < resolution; z++) {
+        const idx = (x * resolution + z) * 3;
 
         // Set color (blue to red gradient)
-        colors[idx] = newData[x][y]; // R
+        colors[idx] = newData[x][z]; // R
         colors[idx + 1] = 0; // G
-        colors[idx + 2] = 1 - newData[x][y]; // B
+        colors[idx + 2] = 1 - newData[x][z]; // B
       }
     }
 
@@ -161,7 +162,11 @@ export function HeatSimulation({
 
   return (
     <>
-      <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+      <mesh
+        ref={meshRef}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, yPlane, 0]}
+      >
         <meshStandardMaterial
           vertexColors
           side={DoubleSide}

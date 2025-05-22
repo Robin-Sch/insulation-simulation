@@ -10,7 +10,9 @@ import { InsulationType } from '@/lib/constants';
 
 export default function Simulation() {
   const [material, setMaterial] = useState<InsulationType>('eps');
-  const [thickness, setThickness] = useState(10); // in cm
+  const [thickness, setThickness] = useState<number>(10); // in cm
+  const [yPlane, setYPlane] = useState<number>(0.7);
+  const [grid, setGrid] = useState<boolean>(false);
 
   return (
     <div className="relative w-full h-screen">
@@ -20,21 +22,32 @@ export default function Simulation() {
           setMaterial={setMaterial}
           thickness={thickness}
           setThickness={setThickness}
+          yPlane={yPlane}
+          setYPlane={setYPlane}
+          grid={grid}
+          setGrid={setGrid}
         />
       </div>
 
       <Canvas camera={{ position: [3, 3, 3] }}>
-        <OrbitControls />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
+        <ambientLight intensity={2} />
+        {/* <pointLight position={[3, 3, 3]} /> */}
 
-        <House material={material} thickness={thickness} />
+        <House yPlane={yPlane} material={material} thickness={thickness} />
 
         <OrbitControls
           enableZoom={true}
           autoRotate={true}
           autoRotateSpeed={1}
         />
+
+        {grid && (
+          <>
+            <gridHelper args={[5, 5]} rotation={[Math.PI / 2, 0, 0]} />
+            <gridHelper args={[5, 5]} rotation={[0, Math.PI / 2, 0]} />
+            <gridHelper args={[5, 5]} rotation={[0, 0, Math.PI / 2]} />
+          </>
+        )}
       </Canvas>
     </div>
   );

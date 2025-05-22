@@ -4,9 +4,11 @@ import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import { HeatSimulation } from './HeatSimulation';
 
 export function House({
+  yPlane,
   material,
   thickness,
 }: {
+  yPlane: number;
   material: InsulationType;
   thickness: number;
 }) {
@@ -19,7 +21,12 @@ export function House({
         <boxGeometry
           args={[houseSize.width, houseSize.height, houseSize.depth]}
         />
-        <meshStandardMaterial color="#ffffff" roughness={0.8} />
+        <meshStandardMaterial
+          color="#ffffff"
+          transparent={true}
+          opacity={0.5}
+          roughness={0.8}
+        />
       </mesh>
 
       <mesh>
@@ -39,6 +46,7 @@ export function House({
       </mesh>
 
       <HeatSimulation
+        yPlane={yPlane}
         houseSize={houseSize}
         insulationConductivity={insulationProps.conductivity}
         insulationThickness={thickness}
