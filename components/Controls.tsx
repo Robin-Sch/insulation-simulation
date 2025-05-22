@@ -11,6 +11,8 @@ type ControlsProps = {
   setResolution: (resolution: number) => void;
   grid: boolean;
   setGrid: (grid: boolean) => void;
+  enabled: boolean;
+  setEnabled: (enabled: boolean) => void;
 };
 
 export default function Controls({
@@ -24,6 +26,8 @@ export default function Controls({
   setResolution,
   grid,
   setGrid,
+  enabled,
+  setEnabled,
 }: ControlsProps) {
   return (
     <>
@@ -117,6 +121,15 @@ export default function Controls({
         <label htmlFor="show-grid" className="ml-2 block text-sm">
           Show Grid
         </label>
+      </div>
+
+      <div className="mt-4">
+        <button
+          onClick={() => setEnabled(!enabled)}
+          className={`px-4 py-2 bg-${enabled ? 'red' : 'blue'}-600 text-white rounded-md hover:bg-${enabled ? 'red' : 'blue'}-700 focus:outline-none`}
+        >
+          {enabled ? 'Stop simulation' : 'Start simulation'}
+        </button>
       </div>
 
       <div

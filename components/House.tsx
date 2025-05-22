@@ -1,20 +1,16 @@
 import React from 'react';
 
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
-import { HeatSimulation } from './HeatSimulation';
 
 export function House({
-  yPlane,
+  houseSize,
   material,
   thickness,
-  resolution,
 }: {
-  yPlane: number;
+  houseSize: { width: number; height: number; depth: number };
   material: InsulationType;
   thickness: number;
-  resolution: number;
 }) {
-  const houseSize = { width: 1.5, height: 1.5, depth: 1.5 };
   const insulationProps = INSULATION_TYPES[material];
 
   return (
@@ -46,14 +42,6 @@ export function House({
           roughness={0.2}
         />
       </mesh>
-
-      <HeatSimulation
-        yPlane={yPlane}
-        houseSize={houseSize}
-        insulationConductivity={insulationProps.conductivity}
-        insulationThickness={thickness}
-        resolution={resolution}
-      />
     </group>
   );
 }

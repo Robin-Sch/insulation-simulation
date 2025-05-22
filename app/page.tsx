@@ -7,6 +7,7 @@ import { Canvas } from '@react-three/fiber';
 import Controls from '@/components/Controls';
 import { House } from '@/components/House';
 import { InsulationType } from '@/lib/constants';
+import { HeatSimulation } from '@/components/HeatSimulation';
 
 export default function Simulation() {
   const [material, setMaterial] = useState<InsulationType>('eps');
@@ -14,6 +15,9 @@ export default function Simulation() {
   const [yPlane, setYPlane] = useState<number>(0.7);
   const [resolution, setResolution] = useState<number>(30);
   const [grid, setGrid] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(false);
+
+  const houseSize = { width: 1.5, height: 1.5, depth: 1.5 };
 
   return (
     <div className="relative w-full h-screen">
@@ -29,6 +33,8 @@ export default function Simulation() {
           setResolution={setResolution}
           grid={grid}
           setGrid={setGrid}
+          enabled={enabled}
+          setEnabled={setEnabled}
         />
       </div>
 
@@ -37,10 +43,17 @@ export default function Simulation() {
         {/* <pointLight position={[3, 3, 3]} /> */}
 
         <House
-          yPlane={yPlane}
+          houseSize={houseSize}
           material={material}
           thickness={thickness}
+        />
+        <HeatSimulation
+          yPlane={yPlane}
+          houseSize={houseSize}
+          insulationMaterial={material}
+          insulationThickness={thickness}
           resolution={resolution}
+          enabled={enabled}
         />
 
         <OrbitControls

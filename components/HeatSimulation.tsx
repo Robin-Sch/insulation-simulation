@@ -7,23 +7,31 @@ import {
   Mesh,
   PlaneGeometry,
 } from 'three';
-import { airConductivity } from '@/lib/constants';
+
+import {
+  airConductivity,
+  INSULATION_TYPES,
+  InsulationType,
+} from '@/lib/constants';
 
 export function HeatSimulation({
   houseSize,
   yPlane,
-  insulationConductivity,
+  insulationMaterial,
   insulationThickness,
   resolution,
+  enabled,
 }: {
   houseSize: { width: number; height: number; depth: number };
   yPlane: number;
-  insulationConductivity: number;
+  insulationMaterial: InsulationType;
   insulationThickness: number;
   resolution: number;
+  enabled: boolean;
 }) {
   const meshRef = useRef<Mesh>(null);
   const [heatData, setHeatData] = useState<number[][]>([]);
+  const [insulationConductivity, setIC] = useState<number>(0);
   const size = 5; // Size of the plane
   const heatIntensity = 5;
 
@@ -69,6 +77,8 @@ export function HeatSimulation({
 
   // Initialize heat data with central heat source
   useEffect(() => {
+    setIC(INSULATION_TYPES[insulationMaterial].conductivity);
+
     const data: number[][] = [];
     const centerX = Math.floor(resolution / 2);
     const centerZ = Math.floor(resolution / 2);
@@ -85,18 +95,15 @@ export function HeatSimulation({
       }
     }
     setHeatData(data);
-  }, [yPlane, insulationConductivity, insulationThickness, resolution]);
+  }, [yPlane, insulationMaterial, insulationThickness, resolution]);
 
   // Solve heat equation with central source
   useFrame(() => {
-    if (!meshRef.current || heatData.length === 0) return;
+    if (!meshRef.current || heatData.length === 0 || !enabled) return;
 
     const newData = heatData.map((row) => [...row]);
     const centerX = Math.floor(resolution / 2);
     const centerZ = Math.floor(resolution / 2);
-
-    // Keep center at constant heat
-    newData[centerX][centerZ] = heatIntensity;
 
     // Diffuse heat from center
     for (let x = 1; x < resolution - 1; x++) {
