@@ -61,6 +61,4 @@ export const INSULATION_TYPES = {
   },
 } as const;
 
-export type InsulationType = keyof typeof INSULATION_TYPES;
-
 export const airConductivity = 0.25;

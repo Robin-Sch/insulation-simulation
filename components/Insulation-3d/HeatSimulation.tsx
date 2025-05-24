@@ -8,11 +8,8 @@ import {
   PlaneGeometry,
 } from 'three';
 
-import {
-  airConductivity,
-  INSULATION_TYPES,
-  InsulationType,
-} from '@/lib/constants';
+import { airConductivity, INSULATION_TYPES } from '@/lib/constants';
+import { InsulationType } from '@/lib/types';
 
 function insideHouse(
   x: number,
@@ -49,14 +46,14 @@ export function HeatSimulation({
   insulationMaterial,
   insulationThickness,
   resolution,
-  enabled,
+  running,
 }: {
   houseSize: { width: number; height: number; depth: number };
   yPlane: number;
   insulationMaterial: InsulationType;
   insulationThickness: number;
   resolution: number;
-  enabled: boolean;
+  running: boolean;
 }) {
   const meshRef = useRef<Mesh>(null);
   const [heatData, setHeatData] = useState<number[][]>([]);
@@ -91,7 +88,7 @@ export function HeatSimulation({
   useFrame(() => {
     if (!meshRef.current || heatData.length === 0) return;
 
-    if (enabled) {
+    if (running) {
       const newData = heatData.map((row) => [...row]);
 
       for (let x = 1; x < resolution - 1; x++) {

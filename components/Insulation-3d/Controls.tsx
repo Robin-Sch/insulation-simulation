@@ -1,4 +1,5 @@
-import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
+import { INSULATION_TYPES } from '@/lib/constants';
+import { InsulationType } from '@/lib/types';
 
 type ControlsProps = {
   material: InsulationType;
@@ -9,10 +10,10 @@ type ControlsProps = {
   setYPlane: (zHeight: number) => void;
   resolution: number;
   setResolution: (resolution: number) => void;
-  grid: boolean;
-  setGrid: (grid: boolean) => void;
-  enabled: boolean;
-  setEnabled: (enabled: boolean) => void;
+  showGrid: boolean;
+  setShowGrid: (showGrid: boolean) => void;
+  running: boolean;
+  setRunning: (running: boolean) => void;
 };
 
 export default function Controls({
@@ -24,10 +25,10 @@ export default function Controls({
   setYPlane,
   resolution,
   setResolution,
-  grid,
-  setGrid,
-  enabled,
-  setEnabled,
+  showGrid,
+  setShowGrid,
+  running,
+  setRunning,
 }: ControlsProps) {
   return (
     <>
@@ -114,8 +115,8 @@ export default function Controls({
         <input
           type="checkbox"
           id="show-grid"
-          checked={grid}
-          onChange={(e) => setGrid(e.target.checked)}
+          checked={showGrid}
+          onChange={(e) => setShowGrid(e.target.checked)}
           className="h-4 w-4 border-gray-300 rounded"
         />
         <label htmlFor="show-grid" className="ml-2 block text-sm">
@@ -125,10 +126,10 @@ export default function Controls({
 
       <div className="mt-4">
         <button
-          onClick={() => setEnabled(!enabled)}
-          className={`${enabled ? 'bg-red-600' : 'bg-blue-600'} ${enabled ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded`}
+          onClick={() => setRunning(!running)}
+          className={`${running ? 'bg-red-600' : 'bg-blue-600'} ${running ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded`}
         >
-          {enabled ? 'Stop simulation' : 'Start simulation'}
+          {running ? 'Stop simulation' : 'Start simulation'}
         </button>
       </div>
 
