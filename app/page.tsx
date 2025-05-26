@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { OrbitControls, Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 
@@ -18,6 +18,20 @@ export default function Simulation() {
         SimulationFactory.create('insulation3d', '1', '1: 3D Insulation'),
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cameraRef = useRef<any>(null);
+    const [cameraSettings, setCameraSettings] = useState({
+        position: [3, 3, 3] as [number, number, number],
+        enableZoom: true,
+        autoRotate: true,
+        autoRotateSpeed: 1,
+    });
+    useEffect(() => {
+        if (cameraRef.current) {
+            cameraRef.current.reset();
+        }
+    }, [cameraSettings]);
 
     const addNewTab = (type: SimulationType) => {
         const newId = (simulations.length + 1).toString();
@@ -119,16 +133,25 @@ export default function Simulation() {
                             />
                         </div>
 
-                        <Canvas camera={{ position: [3, 3, 3] }}>
+                        <Canvas
+                            camera={{
+                                position: cameraSettings.position,
+                            }}
+                        >
                             <ambientLight intensity={3} />
 
-                            <Renderer simulation={activeSimulation} />
-
-                            <OrbitControls
-                                enableZoom
-                                autoRotate
-                                autoRotateSpeed={1}
+                            <Renderer
+                                simulation={activeSimulation}
+                                setCameraSettings={setCameraSettings}
                             />
+                            <OrbitControls
+                                ref={cameraRef}
+                                makeDefault
+                                enableZoom={true}
+                                autoRotate={cameraSettings.autoRotate}
+                                autoRotateSpeed={cameraSettings.autoRotateSpeed}
+                            />
+
                             {activeSimulation.commonConfig.showFps && <Stats />}
                             {activeSimulation.commonConfig.showGrid && <Grid />}
                         </Canvas>

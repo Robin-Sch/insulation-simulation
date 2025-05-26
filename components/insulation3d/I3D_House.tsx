@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function I3D_House({
     houseSize,
     thickness,

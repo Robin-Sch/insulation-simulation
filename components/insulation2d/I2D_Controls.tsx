@@ -28,15 +28,15 @@ export default function I2D_Controls({
 
     return (
         <>
-            {specificConfig.layers.map((layer, i) => {
-                <>
+            {specificConfig.layers.map((layer, i) => (
+                <div key={`layer-${i}`}>
                     <div className="mb-6">
                         <label className="block text-sm font-medium mb-2">
                             Insulation Type
                         </label>
                         <select
                             className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                            value={layer.material}
+                            value={specificConfig.layers[i].material}
                             onChange={(e) =>
                                 handleLayerChange(
                                     i,
@@ -64,7 +64,7 @@ export default function I2D_Controls({
                                 Thickness
                             </label>
                             <span className="text-sm font-semibold">
-                                {layer.thickness} cm
+                                {specificConfig.layers[i].thickness} cm
                             </span>
                         </div>
                         <input
@@ -72,7 +72,7 @@ export default function I2D_Controls({
                             min="10"
                             max="100"
                             step="5"
-                            value={layer.thickness}
+                            value={specificConfig.layers[i].thickness}
                             onChange={(e) =>
                                 handleLayerChange(
                                     i,
@@ -87,8 +87,8 @@ export default function I2D_Controls({
                             <span>100cm</span>
                         </div>
                     </div>
-                </>;
-            })}
+                </div>
+            ))}
 
             <div>
                 <div className="flex justify-between items-center mb-2">

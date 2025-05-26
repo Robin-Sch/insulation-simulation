@@ -26,8 +26,17 @@ export class SimulationFactory {
                 });
             case 'insulation2d':
                 return new Insulation2D(id, title, true, baseConfig, {
-                    material: 'eps',
-                    thickness: 30,
+                    layers: [
+                        {
+                            material: 'eps',
+                            thickness: 30,
+                        },
+                        {
+                            material: 'xps',
+                            thickness: 50,
+                        },
+                    ],
+                    resolution: 50,
                 });
             default:
                 throw new Error(`Unknown simulation type: ${type}`);
