@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /**
@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
    *
    * @see https://nextjs.org/docs/app/building-your-application/deploying/static-exports
    */
-  output: "export",
+  output: 'export',
 
   /**
    * Disable server-based image optimization. Next.js does not support
