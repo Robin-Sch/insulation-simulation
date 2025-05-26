@@ -15,7 +15,7 @@ import { SimulationFactory } from '@/lib/simulations/factory';
 
 export default function Simulation() {
     const [simulations, setSimulations] = useState<ISimulation[]>([
-        SimulationFactory.create('insulation3d', '1', '3D Insulation'),
+        SimulationFactory.create('insulation3d', '1', '1: 3D Insulation'),
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
 
@@ -23,7 +23,7 @@ export default function Simulation() {
         const newId = (simulations.length + 1).toString();
         setSimulations((prev) => [
             ...prev.map((sim) => ({ ...sim, active: false })),
-            SimulationFactory.create(type, newId, `${type} ${newId}`),
+            SimulationFactory.create(type, newId, `${newId}: ${type}`),
         ]);
     };
 

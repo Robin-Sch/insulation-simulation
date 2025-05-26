@@ -13,19 +13,16 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
         type: SimulationType;
         name: string;
         description: string;
-        // icon: React.ReactNode;
     }[] = [
         {
             type: 'insulation3d',
-            name: '3D Inulsation',
+            name: '3D Insulation',
             description: '3d',
-            //   icon: <FireIcon className="w-5 h-5" />,
         },
         {
             type: 'insulation2d',
             name: '2D Insulation',
             description: '2d',
-            //   icon: <CubeIcon className="w-5 h-5" />,
         },
     ];
 
@@ -62,7 +59,6 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
                                         }}
                                         className="w-full text-left px-4 py-2 hover:bg-gray-700 flex items-start space-x-3"
                                     >
-                                        {/* <div className="flex-shrink-0 pt-0.5">{simType.icon}</div> */}
                                         <div>
                                             <div className="text-white">
                                                 {simType.name}

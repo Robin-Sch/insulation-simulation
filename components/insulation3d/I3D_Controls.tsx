@@ -1,30 +1,13 @@
-import {
-    CommonConfig,
-    INSULATION_TYPES,
-    InsulationType,
-} from '@/lib/constants';
+import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import { Insulation3DConfig } from '@/lib/simulations/insulation3d';
 
-interface I3D_ControlsProps {
-    commonConfig: CommonConfig;
-    specificConfig: Insulation3DConfig;
-    onCommonChange: (updates: Partial<CommonConfig>) => void;
-    onSpecificChange: (updates: Partial<Insulation3DConfig>) => void;
-}
-
 export default function I3D_Controls({
-    commonConfig,
     specificConfig,
-    onCommonChange,
     onSpecificChange,
-}: I3D_ControlsProps) {
-    const handleCommonChange = <K extends keyof CommonConfig>(
-        key: K,
-        value: CommonConfig[K]
-    ) => {
-        onCommonChange({ [key]: value });
-    };
-
+}: {
+    specificConfig: Insulation3DConfig;
+    onSpecificChange: (updates: Partial<Insulation3DConfig>) => void;
+}) {
     const handleSpecificChange = <K extends keyof Insulation3DConfig>(
         key: K,
         value: Insulation3DConfig[K]
@@ -34,8 +17,6 @@ export default function I3D_Controls({
 
     return (
         <>
-            <h2 className="text-2xl font-bold mb-4">Controls</h2>
-
             <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">
                     Insulation Type
@@ -147,49 +128,6 @@ export default function I3D_Controls({
                     <span>5</span>
                     <span>100</span>
                 </div>
-            </div>
-
-            <div className="flex items-center mt-4">
-                <input
-                    type="checkbox"
-                    id="show-grid"
-                    checked={commonConfig.showGrid}
-                    onChange={(e) =>
-                        handleCommonChange('showGrid', e.target.checked)
-                    }
-                    className="h-4 w-4 border-gray-300 rounded"
-                />
-                <label htmlFor="show-grid" className="ml-2 block text-sm">
-                    Show Grid
-                </label>
-            </div>
-
-            <div className="flex items-center mt-4">
-                <input
-                    type="checkbox"
-                    id="show-fps"
-                    checked={commonConfig.showFps}
-                    onChange={(e) =>
-                        handleCommonChange('showFps', e.target.checked)
-                    }
-                    className="h-4 w-4 border-gray-300 rounded"
-                />
-                <label htmlFor="show-fps" className="ml-2 block text-sm">
-                    Show FPS
-                </label>
-            </div>
-
-            <div className="mt-4">
-                <button
-                    onClick={() =>
-                        handleCommonChange('running', !commonConfig.running)
-                    }
-                    className={`${commonConfig.running ? 'bg-red-600' : 'bg-blue-600'} ${commonConfig.running ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded`}
-                >
-                    {commonConfig.running
-                        ? 'Stop simulation'
-                        : 'Start simulation'}
-                </button>
             </div>
 
             <div

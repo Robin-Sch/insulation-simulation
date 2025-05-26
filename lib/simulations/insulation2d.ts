@@ -1,8 +1,12 @@
 import { InsulationType, ISimulation } from '../constants';
 
-export interface Insulation2DConfig {
+export interface Insulation2DLayer {
     material: InsulationType;
     thickness: number; // cm
+}
+export interface Insulation2DConfig {
+    layers: Insulation2DLayer[];
+    resolution: number;
 }
 export class Insulation2D implements ISimulation {
     type = 'insulation2d' as const;
