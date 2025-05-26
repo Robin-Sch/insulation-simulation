@@ -7,6 +7,7 @@ import I3D_House from './insulation3d/I3D_House';
 import { ISimulation } from '@/lib/constants';
 import { Insulation2D } from '@/lib/simulations/insulation2d';
 import { Insulation3D } from '@/lib/simulations/insulation3d';
+import I2D_HeatSimulation from './insulation2d/I2D_HeatSimulation';
 
 export default function Renderer({
     simulation,
@@ -65,6 +66,10 @@ export default function Renderer({
                 <>
                     <I2D_Layers
                         config={(simulation as Insulation2D).specificConfig}
+                    />
+                    <I2D_HeatSimulation
+                        config={(simulation as Insulation2D).specificConfig}
+                        running={simulation.commonConfig.running}
                     />
                 </>
             )}

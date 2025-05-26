@@ -105,10 +105,9 @@ export default function I3D_HeatSimulation({
 
         // Update visualization
         const geometry = meshRef.current.geometry as BufferGeometry;
-        const positionAttribute = geometry.attributes.position;
         const colorAttribute = geometry.attributes.color;
 
-        if (!positionAttribute || !colorAttribute) return;
+        if (!colorAttribute) return;
         const colors = colorAttribute.array as Float32Array;
 
         for (let x = 0; x < config.resolution; x++) {
@@ -122,9 +121,7 @@ export default function I3D_HeatSimulation({
             }
         }
 
-        positionAttribute.needsUpdate = true;
         colorAttribute.needsUpdate = true;
-        geometry.computeVertexNormals();
     });
 
     // Initialize geometry
