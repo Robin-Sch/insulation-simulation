@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { OrbitControls, Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 
@@ -19,19 +19,12 @@ export default function Simulation() {
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cameraRef = useRef<any>(null);
     const [cameraSettings, setCameraSettings] = useState({
         position: [3, 3, 3] as [number, number, number],
         enableZoom: true,
         autoRotate: true,
         autoRotateSpeed: 1,
     });
-    useEffect(() => {
-        if (cameraRef.current) {
-            cameraRef.current.reset();
-        }
-    }, [cameraSettings]);
 
     const addNewTab = (type: SimulationType) => {
         const newId = (simulations.length + 1).toString();
@@ -50,7 +43,7 @@ export default function Simulation() {
         );
     };
 
-    const closeTab = (id: string, e: React.MouseEvent) => {
+    const closeTab = (id: string, e: MouseEvent) => {
         e.stopPropagation();
         setSimulations((prev) => {
             const newSims = prev.filter((sim) => sim.id !== id);
@@ -145,7 +138,6 @@ export default function Simulation() {
                                 setCameraSettings={setCameraSettings}
                             />
                             <OrbitControls
-                                ref={cameraRef}
                                 makeDefault
                                 enableZoom={true}
                                 autoRotate={cameraSettings.autoRotate}

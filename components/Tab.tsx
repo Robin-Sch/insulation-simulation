@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
 
 import { ISimulation } from '@/lib/constants';
 
 interface SimulationTabProps {
     simulation: ISimulation;
     onSelect: () => void;
-    onClose: (e: React.MouseEvent) => void;
+    onClose: (e: MouseEvent) => void;
     onRename: (newTitle: string) => void;
 }
 
@@ -29,7 +29,7 @@ export default function Tab({
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             handleTitleBlur();
         }

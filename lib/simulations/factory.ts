@@ -31,10 +31,6 @@ export class SimulationFactory {
                             material: 'eps',
                             thickness: 30,
                         },
-                        {
-                            material: 'xps',
-                            thickness: 50,
-                        },
                     ],
                     resolution: 50,
                 });

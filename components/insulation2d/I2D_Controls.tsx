@@ -57,9 +57,10 @@ export default function I2D_Controls({
                 </label>
                 <select
                     name="newLayerMaterial"
+                    defaultValue="Select material"
                     className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Select material
                     </option>
                     {Object.keys(INSULATION_TYPES).map((type) => (

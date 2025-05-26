@@ -3,7 +3,6 @@ import { Insulation2DConfig } from '@/lib/simulations/insulation2d';
 
 export default function I2D_Layers({ config }: { config: Insulation2DConfig }) {
     let currentX = 0;
-
     return (
         <>
             {config.layers.map((layer, i) => {
