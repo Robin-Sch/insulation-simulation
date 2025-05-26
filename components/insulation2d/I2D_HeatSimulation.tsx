@@ -24,19 +24,6 @@ export default function I2D_HeatSimulation({
     const [size, setSize] = useState<number>(0); // Size (total thickness)
     const heatIntensity = 1;
 
-    // Compute the cumulative thicknesses
-    useEffect(() => {
-        const array: number[] = [];
-        for (const layer of config.layers) {
-            const length = array.length;
-            const previous = length > 0 ? array[length - 1] : 0;
-            const cumValue = previous + layer.thickness / 100;
-            array.push(cumValue);
-        }
-        setCumThick(array);
-        setSize(array[array.length - 1]);
-    }, [config.layers]);
-
     // Determine conductivity at a specific grid point
     const getConductivityAtPoint = (x: number): number => {
         // Convert grid coordinates to world coordinates
@@ -68,8 +55,6 @@ export default function I2D_HeatSimulation({
             setHeatData(newData);
         }
 
-        // console.log(heatData);
-
         // Update visualization
         const geometry = meshRef.current.geometry as BufferGeometry;
         const colorAttribute = geometry.attributes.color;
@@ -87,26 +72,41 @@ export default function I2D_HeatSimulation({
         colorAttribute.needsUpdate = true;
     });
 
-    // Initialize geometry
+    // Initialize geometry & Heat source
     useEffect(() => {
         if (!meshRef.current) return;
 
-        const geometry = new PlaneGeometry(size, 0.3, config.resolution - 1, 1);
+        // Compute the cumulative thicknesses
+        const array: number[] = [];
+        for (const layer of config.layers) {
+            const length = array.length;
+            const previous = length > 0 ? array[length - 1] : 0;
+            const cumValue = previous + layer.thickness / 100;
+            array.push(cumValue);
+        }
+        setCumThick(array);
+        setSize(array[array.length - 1]);
+        console.log(array[array.length - 1]);
+
+        const geometry = new PlaneGeometry(
+            array[array.length - 1],
+            0.3,
+            config.resolution - 1,
+            1
+        );
 
         // Add color attribute
         const colors = new Float32Array(config.resolution * 3);
         geometry.setAttribute('color', new BufferAttribute(colors, 3));
 
         meshRef.current.geometry = geometry;
-    }, [size, config.resolution]);
 
-    useEffect(() => {
         // Heat source is heatIntensity, rest is 0
         const data: number[] = new Array(config.resolution).fill(0);
         data[0] = heatIntensity;
 
         setHeatData(data);
-    }, [config.resolution]);
+    }, [config.resolution, config.layers]);
 
     return (
         <>
