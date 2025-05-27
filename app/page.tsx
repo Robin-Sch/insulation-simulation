@@ -53,25 +53,12 @@ export default function Simulation() {
         );
     };
 
-    const onCommonChange = (id: string, updates: Partial<CommonConfig>) => {
-        setSimulations((prev) =>
-            prev.map((sim) => {
-                if (sim.id === id) {
-                    sim.commonConfig = { ...sim.commonConfig, ...updates };
-                    return sim;
-                } else return sim;
-            })
-        );
-    };
-    const onSpecificChange = (
-        id: string,
-        updates: Partial<ISimulation['specificConfig']>
-    ) => {
+    const onConfigChange = (id: string, updates: Partial<CommonConfig>) => {
         setSimulations((prev) =>
             prev.map((sim) => {
                 if (sim.id === id) {
                     // @ts-expect-error factory moment
-                    sim.specificConfig = { ...sim.specificConfig, ...updates };
+                    sim.config = { ...sim.config, ...updates };
                     return sim;
                 } else return sim;
             })
@@ -105,15 +92,7 @@ export default function Simulation() {
                         <div className="absolute top-4 left-4 z-1 bg-gray-800/80 backdrop-blur-sm p-4 rounded-lg shadow-xl text-white space-y-4 w-64">
                             <Controls
                                 simulation={activeSimulation}
-                                onCommonChange={(updates) =>
-                                    onCommonChange(activeSimulation.id, updates)
-                                }
-                                onSpecificChange={(updates) =>
-                                    onSpecificChange(
-                                        activeSimulation.id,
-                                        updates
-                                    )
-                                }
+                                onConfigChange={(updates) => onConfigChange(activeSimulation.id, updates)}
                             />
                         </div>
 

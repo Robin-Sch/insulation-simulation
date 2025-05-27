@@ -1,6 +1,9 @@
 import { InsulationType, ISimulation } from '../constants';
 
 export interface Insulation3DConfig {
+    showGrid: boolean;
+    showFps: boolean;
+    running: boolean;
     material: InsulationType;
     thickness: number; // cm
     yPlane: number;
@@ -14,11 +17,6 @@ export class Insulation3D implements ISimulation {
         public id: string,
         public title: string,
         public active: boolean,
-        public commonConfig: {
-            showGrid: boolean;
-            showFps: boolean;
-            running: boolean;
-        },
-        public specificConfig: Insulation3DConfig
+        public config: Insulation3DConfig
     ) {}
 }

@@ -74,6 +74,5 @@ export interface ISimulation {
     title: string;
     active: boolean;
     type: SimulationType;
-    commonConfig: CommonConfig;
-    specificConfig: unknown;
+    config: unknown;
 }

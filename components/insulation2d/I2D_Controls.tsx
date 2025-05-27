@@ -5,19 +5,19 @@ import {
 } from '@/lib/simulations/insulation2d';
 
 export default function I2D_Controls({
-    specificConfig,
-    onSpecificChange,
+    config,
+    onConfigChange,
 }: {
-    specificConfig: Insulation2DConfig;
-    onSpecificChange: (updates: Partial<Insulation2DConfig>) => void;
+    config: Insulation2DConfig;
+    onConfigChange: (updates: Partial<Insulation2DConfig>) => void;
 }) {
     const handleLayerChange = <K extends keyof Insulation2DLayer>(
         index: number,
         key: K,
         value: Insulation2DLayer[K]
     ) => {
-        specificConfig.layers[index][key] = value;
-        onSpecificChange({ layers: specificConfig.layers });
+        config.layers[index][key] = value;
+        onConfigChange({ layers: config.layers });
     };
 
     const handleLayerAdd = () => {
@@ -36,8 +36,8 @@ export default function I2D_Controls({
             thickness: selectedThickness,
         };
 
-        onSpecificChange({
-            layers: [...specificConfig.layers, newLayer],
+        onConfigChange({
+            layers: [...config.layers, newLayer],
         });
     };
 
@@ -98,7 +98,7 @@ export default function I2D_Controls({
             </button>
 
             <h2 className="text-xl font-bold mb-4">Modify existing</h2>
-            {specificConfig.layers.map((layer, i) => (
+            {config.layers.map((layer, i) => (
                 <div key={`layer-${i}`}>
                     <div className="mb-6">
                         <label className="block text-sm font-medium mb-2">
@@ -106,7 +106,7 @@ export default function I2D_Controls({
                         </label>
                         <select
                             className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                            value={specificConfig.layers[i].material}
+                            value={layer.material}
                             onChange={(e) =>
                                 handleLayerChange(
                                     i,
@@ -134,7 +134,7 @@ export default function I2D_Controls({
                                 Thickness
                             </label>
                             <span className="text-sm font-semibold">
-                                {specificConfig.layers[i].thickness} cm
+                                {layer.thickness} cm
                             </span>
                         </div>
                         <input
@@ -142,7 +142,7 @@ export default function I2D_Controls({
                             min="10"
                             max="100"
                             step="5"
-                            value={specificConfig.layers[i].thickness}
+                            value={layer.thickness}
                             onChange={(e) =>
                                 handleLayerChange(
                                     i,

@@ -12,11 +12,7 @@ import { Line } from 'react-chartjs-2';
 import { makeConnection, makeNode, run } from 'hotstuff-network';
 import { useEffect, useState } from 'react';
 
-import {
-    airConductivity,
-    INSULATION_TYPES,
-    InsulationType,
-} from '@/lib/constants';
+import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import { Insulation2DConfig } from '@/lib/simulations/insulation2d';
 
 ChartJS.register(
@@ -41,7 +37,8 @@ const options = {
         },
         tooltip: {
             callbacks: {
-                label: (context) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                label: (context: any) => {
                     return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}°C`;
                 },
             },
@@ -70,6 +67,7 @@ export default function I2D_Chart({
     config: Insulation2DConfig;
     setBoundaryTemp: (boundaryTemp: number[]) => void;
 }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, setData] = useState<any>({ labels: [], datasets: [] });
     const layersString = JSON.stringify(config.layers); // used to check if array gets updated
 
@@ -91,13 +89,6 @@ export default function I2D_Chart({
                     isBoundary: false,
                 })
             ),
-            makeNode({
-                name: 'Outside',
-                temperatureDegC: 10,
-                capacitanceJPerDegK: 10000,
-                powerGenW: 0,
-                isBoundary: false,
-            }),
         ];
 
         const connections = [];
@@ -114,14 +105,6 @@ export default function I2D_Chart({
             });
             connections.push(connection);
         }
-        connections.push(
-            makeConnection({
-                firstNode: nodes[nodes.length - 2],
-                secondNode: nodes[nodes.length - 1],
-                resistanceDegKPerW: (1 / airConductivity) * 1,
-                kind: 'cond',
-            })
-        );
 
         const { timeSeriesS: labels, nodeResults } = run({
             nodes,
@@ -134,8 +117,7 @@ export default function I2D_Chart({
             label: nodeResult.node.name,
             data: nodeResult.tempDegC,
             borderColor:
-                nodeResult.node.name === 'Inside' ||
-                nodeResult.node.name === 'Outside'
+                nodeResult.node.name === 'Inside'
                     ? 'black'
                     : INSULATION_TYPES[nodeResult.node.name as InsulationType]
                           .color,

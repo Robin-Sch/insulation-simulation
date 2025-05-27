@@ -42,10 +42,8 @@ function insideHouseOrInsulation(
 
 export default function I3D_HeatSimulation({
     config,
-    running,
 }: {
     config: Insulation3DConfig;
-    running: boolean;
 }) {
     const meshRef = useRef<Mesh>(null);
     const [heatData, setHeatData] = useState<number[][]>([]);
@@ -81,7 +79,7 @@ export default function I3D_HeatSimulation({
     useFrame(() => {
         if (!meshRef.current || heatData.length === 0) return;
 
-        if (running) {
+        if (config.running) {
             const newData = heatData.map((row) => [...row]);
 
             for (let x = 1; x < config.resolution - 1; x++) {

@@ -20,17 +20,17 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
     return (
         <>
             {simulation.type === 'insulation2d' && (
-                <div className="pl-68 flex flex-col w-full">
-                    <div className="p-4">
+                <div className="pl-68 flex flex-col w-full h-full">
+                    <div className="p-4 flex-none">
                         <I2D_Layers
-                            config={(simulation as Insulation2D).specificConfig}
+                            config={(simulation as Insulation2D).config}
                             boundaryTemp={insulation2dBoundaryTemp}
                         />
                     </div>
 
-                    <div className="p-4 w-full h-full">
+                    <div className="p-4 flex-1 w-full">
                         <I2D_Chart
-                            config={(simulation as Insulation2D).specificConfig}
+                            config={(simulation as Insulation2D).config}
                             setBoundaryTemp={setInsulation2dBoundaryTemp}
                         />
                     </div>
@@ -42,13 +42,11 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
                     <ambientLight intensity={3} />
                     <I3D_House
                         thickness={
-                            (simulation as Insulation3D).specificConfig
-                                .thickness
+                            (simulation as Insulation3D).config.thickness
                         }
                     />
                     <I3D_HeatSimulation
-                        config={(simulation as Insulation3D).specificConfig}
-                        running={simulation.commonConfig.running}
+                        config={(simulation as Insulation3D).config}
                     />
                     <OrbitControls
                         makeDefault
@@ -57,8 +55,8 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
                         autoRotate={true}
                         autoRotateSpeed={1}
                     />
-                    {simulation.commonConfig.showFps && <Stats />}
-                    {simulation.commonConfig.showGrid && <Grid />}
+                    {(simulation as Insulation3D).config.showFps && <Stats />}
+                    {(simulation as Insulation3D).config.showGrid && <Grid />}
                 </Canvas>
             )}
         </>

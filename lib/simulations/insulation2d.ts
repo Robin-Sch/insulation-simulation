@@ -14,7 +14,6 @@ export class Insulation2D implements ISimulation {
         public id: string,
         public title: string,
         public active: boolean,
-        public commonConfig: object,
-        public specificConfig: Insulation2DConfig
+        public config: Insulation2DConfig
     ) {}
 }
