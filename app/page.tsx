@@ -1,39 +1,20 @@
 'use client';
 
-import { MouseEvent, useEffect, useRef, useState } from 'react';
-import { OrbitControls, Stats } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
+import { MouseEvent, useState } from 'react';
 
 import Controls from '@/components/Controls';
-import Grid from '@/components/Grid';
 import Renderer from '@/components/Renderer';
 import Tab from '@/components/Tab';
 import { TypeMenu } from '@/components/TypeMenu';
 
 import { CommonConfig, ISimulation, SimulationType } from '@/lib/constants';
 import { SimulationFactory } from '@/lib/simulations/factory';
-import { Vector3 } from 'three';
 
 export default function Simulation() {
     const [simulations, setSimulations] = useState<ISimulation[]>([
         SimulationFactory.create('insulation3d', '1', '1: 3D Insulation'),
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
-
-    const cameraRef = useRef<any>(null);
-    const [cameraSettings, setCameraSettings] = useState({
-        position: [3, 3, 3] as [number, number, number],
-        lookAt: [0, 0, 0] as [number, number, number],
-        enableZoom: true,
-        autoRotate: true,
-        autoRotateSpeed: 1,
-    });
-    useEffect(() => {
-        if (cameraRef.current) {
-            const pos = new Vector3(...cameraSettings.position);
-            cameraRef.current.object.position.copy(pos);
-        }
-    }, [cameraSettings]);
 
     const addNewTab = (type: SimulationType) => {
         const newId = (simulations.length + 1).toString();
@@ -135,25 +116,7 @@ export default function Simulation() {
                             />
                         </div>
 
-                        <Canvas camera={{ position: cameraSettings.position }}>
-                            <ambientLight intensity={3} />
-
-                            <Renderer
-                                simulation={activeSimulation}
-                                setCameraSettings={setCameraSettings}
-                            />
-                            <OrbitControls
-                                ref={cameraRef}
-                                makeDefault
-                                target={cameraSettings.lookAt}
-                                enableZoom={true}
-                                autoRotate={cameraSettings.autoRotate}
-                                autoRotateSpeed={cameraSettings.autoRotateSpeed}
-                            />
-
-                            {activeSimulation.commonConfig.showFps && <Stats />}
-                            {activeSimulation.commonConfig.showGrid && <Grid />}
-                        </Canvas>
+                        <Renderer simulation={activeSimulation} />
                     </>
                 )}
             </div>

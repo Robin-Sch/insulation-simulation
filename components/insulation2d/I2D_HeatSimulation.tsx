@@ -86,7 +86,6 @@ export default function I2D_HeatSimulation({
         }
         setCumThick(array);
         setSize(array[array.length - 1]);
-        console.log(array[array.length - 1]);
 
         const geometry = new PlaneGeometry(
             array[array.length - 1],
