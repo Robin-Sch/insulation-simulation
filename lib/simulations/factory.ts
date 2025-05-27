@@ -8,32 +8,41 @@ export class SimulationFactory {
         id: string,
         title: string
     ): ISimulation {
-        const baseConfig = {
-            showGrid: false,
-            showFps: false,
-            running: false,
-            active: true,
-        };
-
         switch (type) {
             case 'insulation3d':
-                return new Insulation3D(id, title, true, baseConfig, {
-                    material: 'eps',
-                    thickness: 30,
-                    yPlane: 0.7,
-                    resolution: 50,
-                    houseSize: { width: 1.5, height: 1.5, depth: 1.5 },
-                });
+                return new Insulation3D(
+                    id,
+                    title,
+                    true,
+                    {
+                        showGrid: false,
+                        showFps: false,
+                        running: false,
+                    },
+                    {
+                        material: 'eps',
+                        thickness: 30,
+                        yPlane: 0.7,
+                        resolution: 50,
+                        houseSize: { width: 1.5, height: 1.5, depth: 1.5 },
+                    }
+                );
             case 'insulation2d':
-                return new Insulation2D(id, title, true, baseConfig, {
-                    layers: [
-                        {
-                            material: 'eps',
-                            thickness: 30,
-                        },
-                    ],
-                    resolution: 50,
-                });
+                return new Insulation2D(
+                    id,
+                    title,
+                    true,
+                    {},
+                    {
+                        layers: [
+                            {
+                                material: 'eps',
+                                thickness: 30,
+                            },
+                        ],
+                        resolution: 50,
+                    }
+                );
             default:
                 throw new Error(`Unknown simulation type: ${type}`);
         }

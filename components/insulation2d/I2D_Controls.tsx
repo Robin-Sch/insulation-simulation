@@ -11,13 +11,6 @@ export default function I2D_Controls({
     specificConfig: Insulation2DConfig;
     onSpecificChange: (updates: Partial<Insulation2DConfig>) => void;
 }) {
-    const handleSpecificChange = <K extends keyof Insulation2DConfig>(
-        key: K,
-        value: Insulation2DConfig[K]
-    ) => {
-        onSpecificChange({ [key]: value });
-    };
-
     const handleLayerChange = <K extends keyof Insulation2DLayer>(
         index: number,
         key: K,
@@ -166,35 +159,6 @@ export default function I2D_Controls({
                     </div>
                 </div>
             ))}
-
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Resolution
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {specificConfig.resolution}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="5"
-                    max="100"
-                    step="1"
-                    value={specificConfig.resolution}
-                    onChange={(e) =>
-                        handleSpecificChange(
-                            'resolution',
-                            parseFloat(e.target.value)
-                        )
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>5</span>
-                    <span>100</span>
-                </div>
-            </div>
         </>
     );
 }

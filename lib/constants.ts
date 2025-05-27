@@ -65,9 +65,9 @@ export const airConductivity = 0.25;
 
 export type SimulationType = 'insulation3d' | 'insulation2d';
 export interface CommonConfig {
-    showGrid: boolean;
-    showFps: boolean;
-    running: boolean;
+    showGrid?: boolean;
+    showFps?: boolean;
+    running?: boolean;
 }
 export interface ISimulation {
     id: string;

@@ -12,7 +12,8 @@ import { SimulationFactory } from '@/lib/simulations/factory';
 
 export default function Simulation() {
     const [simulations, setSimulations] = useState<ISimulation[]>([
-        SimulationFactory.create('insulation3d', '1', '1: 3D Insulation'),
+        SimulationFactory.create('insulation2d', '1', '1: 2D Insulation'),
+        SimulationFactory.create('insulation3d', '2', '2: 3D Insulation'),
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
 
@@ -101,7 +102,7 @@ export default function Simulation() {
             <div className="flex-1 relative">
                 {activeSimulation && (
                     <>
-                        <div className="absolute top-4 left-4 z-10 bg-gray-800/80 backdrop-blur-sm p-4 rounded-lg shadow-xl text-white space-y-4 w-64">
+                        <div className="absolute top-4 left-4 z-1 bg-gray-800/80 backdrop-blur-sm p-4 rounded-lg shadow-xl text-white space-y-4 w-64">
                             <Controls
                                 simulation={activeSimulation}
                                 onCommonChange={(updates) =>

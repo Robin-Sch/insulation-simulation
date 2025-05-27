@@ -40,7 +40,7 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
                 <>
                     {/* Click outside to close */}
                     <div
-                        className="fixed inset-0 z-10"
+                        className="fixed inset-0 z-1"
                         onClick={() => setIsOpen(false)}
                     />
 

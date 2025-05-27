@@ -12,7 +12,11 @@ import { Line } from 'react-chartjs-2';
 import { makeConnection, makeNode, run } from 'hotstuff-network';
 import { useEffect, useState } from 'react';
 
-import { INSULATION_TYPES } from '@/lib/constants';
+import {
+    airConductivity,
+    INSULATION_TYPES,
+    InsulationType,
+} from '@/lib/constants';
 import { Insulation2DConfig } from '@/lib/simulations/insulation2d';
 
 ChartJS.register(
@@ -38,7 +42,7 @@ const options = {
         tooltip: {
             callbacks: {
                 label: (context) => {
-                    return `${context.dataset.label}: ${context.parsed.y}°C`;
+                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}°C`;
                 },
             },
         },
@@ -61,46 +65,63 @@ const options = {
 
 export default function I2D_Chart({
     config,
-    running,
+    setBoundaryTemp,
 }: {
     config: Insulation2DConfig;
-    running: boolean;
+    setBoundaryTemp: (boundaryTemp: number[]) => void;
 }) {
     const [data, setData] = useState<any>({ labels: [], datasets: [] });
+    const layersString = JSON.stringify(config.layers); // used to check if array gets updated
 
     useEffect(() => {
         const nodes = [
             makeNode({
-                name: '0',
+                name: 'Inside',
                 temperatureDegC: 20,
                 capacitanceJPerDegK: 10000,
                 powerGenW: 0,
                 isBoundary: true,
             }),
+            ...config.layers.map((layer) =>
+                makeNode({
+                    name: layer.material,
+                    temperatureDegC: 10,
+                    capacitanceJPerDegK: 10000,
+                    powerGenW: 0,
+                    isBoundary: false,
+                })
+            ),
+            makeNode({
+                name: 'Outside',
+                temperatureDegC: 10,
+                capacitanceJPerDegK: 10000,
+                powerGenW: 0,
+                isBoundary: false,
+            }),
         ];
+
         const connections = [];
         for (let i = 0; i < config.layers.length; i++) {
             const layer = config.layers[i];
             const material = INSULATION_TYPES[layer.material];
 
-            const node = makeNode({
-                name: (i + 1).toString(),
-                temperatureDegC: 10,
-                capacitanceJPerDegK: 10000,
-                powerGenW: 0,
-                isBoundary: false,
-            });
-            nodes.push(node);
-
             const connection = makeConnection({
-                firstNode: nodes[i], // (i + 1) - 1 = i
-                secondNode: node,
+                firstNode: nodes[i],
+                secondNode: nodes[i + 1],
                 resistanceDegKPerW:
-                    1 / (material.conductivity * (layer.thickness / 100)),
+                    (1 / material.conductivity) * (layer.thickness / 100),
                 kind: 'cond',
             });
             connections.push(connection);
         }
+        connections.push(
+            makeConnection({
+                firstNode: nodes[nodes.length - 2],
+                secondNode: nodes[nodes.length - 1],
+                resistanceDegKPerW: (1 / airConductivity) * 1,
+                kind: 'cond',
+            })
+        );
 
         const { timeSeriesS: labels, nodeResults } = run({
             nodes,
@@ -109,22 +130,24 @@ export default function I2D_Chart({
             totalTimeS: 60 * 60 * 24,
         });
 
-        const datasets = nodeResults.map((nodeResult, i) => ({
-            label: `${nodeResult.node.name}`,
+        const datasets = nodeResults.map((nodeResult) => ({
+            label: nodeResult.node.name,
             data: nodeResult.tempDegC,
-            borderColor: `hsl(${(i * 360) / nodeResults.length}, 70%, 50%)`,
-            backgroundColor: `hsla(${(i * 360) / nodeResults.length}, 70%, 50%, 0.1)`,
-            tension: 0.4,
+            borderColor:
+                nodeResult.node.name === 'Inside' ||
+                nodeResult.node.name === 'Outside'
+                    ? 'black'
+                    : INSULATION_TYPES[nodeResult.node.name as InsulationType]
+                          .color,
         }));
         setData({
             labels,
             datasets,
         });
-    }, [config.layers, running]);
+        setBoundaryTemp(
+            datasets.map((dataset) => dataset.data[dataset.data.length - 1])
+        );
+    }, [setBoundaryTemp, layersString, config.layers]);
 
-    return (
-        <div className="w-full">
-            <Line options={options} data={data} />;
-        </div>
-    );
+    return <Line options={options} data={data} />;
 }

@@ -1,10 +1,10 @@
-export default function I3D_House({
-    houseSize,
-    thickness,
-}: {
-    houseSize: { width: number; height: number; depth: number };
-    thickness: number;
-}) {
+import { useMemo } from 'react';
+
+export default function I3D_House({ thickness }: { thickness: number }) {
+    const houseSize = useMemo(
+        () => ({ width: 1.5, height: 1.5, depth: 1.5 }),
+        []
+    );
     return (
         <group>
             <mesh>

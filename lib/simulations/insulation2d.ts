@@ -6,7 +6,6 @@ export interface Insulation2DLayer {
 }
 export interface Insulation2DConfig {
     layers: Insulation2DLayer[];
-    resolution: number;
 }
 export class Insulation2D implements ISimulation {
     type = 'insulation2d' as const;
@@ -15,11 +14,7 @@ export class Insulation2D implements ISimulation {
         public id: string,
         public title: string,
         public active: boolean,
-        public commonConfig: {
-            showGrid: boolean;
-            showFps: boolean;
-            running: boolean;
-        },
+        public commonConfig: object,
         public specificConfig: Insulation2DConfig
     ) {}
 }
