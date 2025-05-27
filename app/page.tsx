@@ -92,7 +92,9 @@ export default function Simulation() {
                         <div className="absolute top-4 left-4 z-1 bg-gray-800/80 backdrop-blur-sm p-4 rounded-lg shadow-xl text-white space-y-4 w-64">
                             <Controls
                                 simulation={activeSimulation}
-                                onConfigChange={(updates) => onConfigChange(activeSimulation.id, updates)}
+                                onConfigChange={(updates) =>
+                                    onConfigChange(activeSimulation.id, updates)
+                                }
                             />
                         </div>
 
