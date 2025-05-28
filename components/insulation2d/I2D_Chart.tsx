@@ -25,6 +25,17 @@ ChartJS.register(
     Legend
 );
 
+function secondsToHms(d: number) {
+    const h = Math.floor(d / 3600);
+    const m = Math.floor((d % 3600) / 60);
+    const s = Math.floor((d % 3600) % 60);
+
+    const hDisplay = h > 0 ? h + (h == 1 ? ' hour ' : ' hours ') : '';
+    const mDisplay = m > 0 ? m + (m == 1 ? ' minute ' : ' minutes ') : '';
+    const sDisplay = s > 0 ? s + (s == 1 ? ' second' : ' seconds') : '';
+    return hDisplay + mDisplay + sDisplay;
+}
+
 const options = {
     responsive: true,
     plugins: {
@@ -39,7 +50,7 @@ const options = {
             callbacks: {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 label: (context: any) => {
-                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}°C`;
+                    return `${secondsToHms(context.dataset.label)}: ${context.parsed.y.toFixed(2)}°C`;
                 },
             },
         },
@@ -78,7 +89,7 @@ export default function I2D_Chart({
                 temperatureDegC: 20,
                 capacitanceJPerDegK: 10000,
                 powerGenW: 0,
-                isBoundary: true,
+                isBoundary: false,
             }),
             ...config.layers.map((layer) =>
                 makeNode({
@@ -106,13 +117,14 @@ export default function I2D_Chart({
             connections.push(connection);
         }
 
-        const { timeSeriesS: labels, nodeResults } = run({
+        const { timeSeriesS, nodeResults } = run({
             nodes,
             connections,
             timeStepS: 60 * 60,
             totalTimeS: 60 * 60 * 24,
         });
 
+        const labels = timeSeriesS.map((time) => secondsToHms(time));
         const datasets = nodeResults.map((nodeResult) => ({
             label: nodeResult.node.name,
             data: nodeResult.tempDegC,
