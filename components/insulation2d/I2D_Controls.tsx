@@ -54,7 +54,14 @@ export default function I2D_Controls({
             <div>
                 <div className="flex justify-between items-center mb-2">
                     <label className="block text-sm font-medium">
-                        Initial inside temperature
+                        Initial inside temp
+                        <span className="help-tooltip group relative ml-1">
+                            <span className="text-xs cursor-help"> (?)</span>
+                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                                Initial temperature on the interior (left) side
+                                of the wall (0-30°C)
+                            </span>
+                        </span>
                     </label>
                     <span className="text-sm font-semibold">
                         {config.insideTemp}°C
@@ -83,7 +90,14 @@ export default function I2D_Controls({
             <div>
                 <div className="flex justify-between items-center mb-2">
                     <label className="block text-sm font-medium">
-                        Initial outside temperature
+                        Initial outside temp
+                        <span className="help-tooltip group relative ml-1">
+                            <span className="text-xs cursor-help"> (?)</span>
+                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                                Initial temperature on the exterior (right) side
+                                of the wall (0-30°C)
+                            </span>
+                        </span>
                     </label>
                     <span className="text-sm font-semibold">
                         {config.outsideTemp}°C
@@ -113,6 +127,12 @@ export default function I2D_Controls({
                 <div className="flex justify-between items-center mb-2">
                     <label className="block text-sm font-medium">
                         Duration
+                        <span className="help-tooltip group relative ml-1">
+                            <span className="text-xs cursor-help">(?)</span>
+                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                                Simulation duration (1 minute to 1.5 days)
+                            </span>
+                        </span>
                     </label>
                     <span className="text-sm font-semibold">
                         {secondsToHms(config.duration)}
@@ -137,7 +157,15 @@ export default function I2D_Controls({
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">Steps</label>
+                    <label className="block text-sm font-medium">
+                        Steps
+                        <span className="help-tooltip group relative ml-1">
+                            <span className="text-xs cursor-help"> (?)</span>
+                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                                Number of in-between calculation steps
+                            </span>
+                        </span>
+                    </label>
                     <span className="text-sm font-semibold">
                         {config.steps}
                     </span>
@@ -163,6 +191,12 @@ export default function I2D_Controls({
             <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">
                     Insulation Type
+                    <span className="help-tooltip group relative ml-1">
+                        <span className="text-xs cursor-help"> (?)</span>
+                        <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                            Material type affects thermal conductivity (λ)
+                        </span>
+                    </span>
                 </label>
                 <select
                     name="newLayerMaterial"
@@ -188,6 +222,12 @@ export default function I2D_Controls({
                 <div className="flex justify-between items-center mb-2">
                     <label className="block text-sm font-medium">
                         Thickness
+                        <span className="help-tooltip group relative ml-1">
+                            <span className="text-xs cursor-help"> (?)</span>
+                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
+                                Thickness of new layer (10-100cm)
+                            </span>
+                        </span>
                     </label>
                     <span className="text-sm font-semibold">50 cm</span>
                 </div>
