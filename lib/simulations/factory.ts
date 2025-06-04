@@ -28,6 +28,10 @@ export class SimulationFactory {
                             thickness: 30,
                         },
                     ],
+                    insideTemp: 20,
+                    outsideTemp: 10,
+                    duration: 60 * 60 * 24,
+                    steps: 24,
                 });
             default:
                 throw new Error(`Unknown simulation type: ${type}`);

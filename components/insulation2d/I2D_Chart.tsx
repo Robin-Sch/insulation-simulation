@@ -13,7 +13,10 @@ import { makeConnection, makeNode, run } from 'hotstuff-network';
 import { useEffect, useState } from 'react';
 
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
-import { Insulation2DConfig } from '@/lib/simulations/insulation2d';
+import {
+    Insulation2DConfig,
+    secondsToHms,
+} from '@/lib/simulations/insulation2d';
 
 ChartJS.register(
     CategoryScale,
@@ -24,17 +27,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-function secondsToHms(d: number) {
-    const h = Math.floor(d / 3600);
-    const m = Math.floor((d % 3600) / 60);
-    const s = Math.floor((d % 3600) % 60);
-
-    const hDisplay = h > 0 ? h + (h == 1 ? ' hour ' : ' hours ') : '';
-    const mDisplay = m > 0 ? m + (m == 1 ? ' minute ' : ' minutes ') : '';
-    const sDisplay = s > 0 ? s + (s == 1 ? ' second' : ' seconds') : '';
-    return hDisplay + mDisplay + sDisplay;
-}
 
 const options = {
     responsive: true,
@@ -86,7 +78,7 @@ export default function I2D_Chart({
         const nodes = [
             makeNode({
                 name: 'Inside',
-                temperatureDegC: 20,
+                temperatureDegC: config.insideTemp,
                 capacitanceJPerDegK: 10000,
                 powerGenW: 0,
                 isBoundary: false,
@@ -94,7 +86,7 @@ export default function I2D_Chart({
             ...config.layers.map((layer) =>
                 makeNode({
                     name: layer.material,
-                    temperatureDegC: 10,
+                    temperatureDegC: config.outsideTemp,
                     capacitanceJPerDegK: 10000,
                     powerGenW: 0,
                     isBoundary: false,
@@ -120,8 +112,8 @@ export default function I2D_Chart({
         const { timeSeriesS, nodeResults } = run({
             nodes,
             connections,
-            timeStepS: 60 * 60,
-            totalTimeS: 60 * 60 * 24,
+            timeStepS: config.duration / config.steps,
+            totalTimeS: config.duration,
         });
 
         const labels = timeSeriesS.map((time) => secondsToHms(time));
@@ -141,7 +133,15 @@ export default function I2D_Chart({
         setBoundaryTemp(
             datasets.map((dataset) => dataset.data[dataset.data.length - 1])
         );
-    }, [setBoundaryTemp, layersString, config.layers]);
+    }, [
+        setBoundaryTemp,
+        layersString,
+        config.layers,
+        config.insideTemp,
+        config.outsideTemp,
+        config.duration,
+        config.steps,
+    ]);
 
     return <Line options={options} data={data} />;
 }
