@@ -14,9 +14,9 @@ import { useEffect, useState } from 'react';
 
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import {
-    Insulation2DConfig,
+    InsulationGraphConfig,
     secondsToHms,
-} from '@/lib/simulations/insulation2d';
+} from '@/lib/simulations/insulationGraph';
 
 ChartJS.register(
     CategoryScale,
@@ -63,11 +63,11 @@ const options = {
     },
 };
 
-export default function I2D_Chart({
+export default function InsulationGraph_Graph({
     config,
     setBoundaryTemp,
 }: {
-    config: Insulation2DConfig;
+    config: InsulationGraphConfig;
     setBoundaryTemp: (boundaryTemp: number[]) => void;
 }) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

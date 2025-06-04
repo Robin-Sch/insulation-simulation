@@ -4,20 +4,20 @@ import Select from '../controls/Select';
 import Slider from '../controls/Slider';
 
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
-import { Insulation3DConfig } from '@/lib/simulations/insulation3d';
+import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
 
-export default function I3D_Controls({
+export default function InsulationSimulation_Controls({
     config,
     onConfigChange,
 }: {
-    config: Insulation3DConfig;
-    onConfigChange: (updates: Partial<Insulation3DConfig>) => void;
+    config: InsulationSimulationConfig;
+    onConfigChange: (updates: Partial<InsulationSimulationConfig>) => void;
 }) {
     const [showHelp, setShowHelp] = useState(false);
 
-    const handleConfigChange = <K extends keyof Insulation3DConfig>(
+    const handleConfigChange = <K extends keyof InsulationSimulationConfig>(
         key: K,
-        value: Insulation3DConfig[K]
+        value: InsulationSimulationConfig[K]
     ) => {
         onConfigChange({ [key]: value });
     };

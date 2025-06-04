@@ -63,7 +63,7 @@ export const INSULATION_TYPES = {
 export type InsulationType = keyof typeof INSULATION_TYPES;
 export const airConductivity = 0.25;
 
-export type SimulationType = 'insulation3d' | 'insulation2d';
+export type SimulationType = 'insulationGraph' | 'insulationSimulation';
 export interface CommonConfig {
     showGrid?: boolean;
     showFps?: boolean;

@@ -1,12 +1,13 @@
-import { INSULATION_TYPES } from '@/lib/constants';
-import { Insulation2DConfig } from '@/lib/simulations/insulation2d';
 import { useEffect, useState } from 'react';
 
-export default function I2D_Layers({
+import { INSULATION_TYPES } from '@/lib/constants';
+import { InsulationGraphConfig } from '@/lib/simulations/insulationGraph';
+
+export default function InsulationGraph_Layers({
     config,
     boundaryTemp,
 }: {
-    config: Insulation2DConfig;
+    config: InsulationGraphConfig;
     boundaryTemp: number[];
 }) {
     const [totalThick, setTotalThick] = useState<number>(0.3);

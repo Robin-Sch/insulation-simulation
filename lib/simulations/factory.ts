@@ -1,27 +1,17 @@
 import { ISimulation, SimulationType } from '../constants';
-import { Insulation2D } from './insulation2d';
-import { Insulation3D } from './insulation3d';
+import { InsulationGraph } from './insulationGraph';
+import { InsulationSimulation } from './insulationSimulation';
 
 export class SimulationFactory {
     static create(
         type: SimulationType,
         id: string,
-        title: string
+        title: string,
+        active: boolean
     ): ISimulation {
         switch (type) {
-            case 'insulation3d':
-                return new Insulation3D(id, title, true, {
-                    showGrid: false,
-                    showFps: false,
-                    running: false,
-                    material: 'eps',
-                    thickness: 30,
-                    yPlane: 0.7,
-                    resolution: 50,
-                    houseSize: { width: 1.5, height: 1.5, depth: 1.5 },
-                });
-            case 'insulation2d':
-                return new Insulation2D(id, title, true, {
+            case 'insulationGraph':
+                return new InsulationGraph(id, title, active, {
                     layers: [
                         {
                             material: 'eps',
@@ -32,6 +22,17 @@ export class SimulationFactory {
                     outsideTemp: 10,
                     duration: 60 * 60 * 24,
                     steps: 24,
+                });
+            case 'insulationSimulation':
+                return new InsulationSimulation(id, title, active, {
+                    showGrid: false,
+                    showFps: false,
+                    running: false,
+                    material: 'eps',
+                    thickness: 30,
+                    yPlane: 0.7,
+                    resolution: 50,
+                    houseSize: { width: 1.5, height: 1.5, depth: 1.5 },
                 });
             default:
                 throw new Error(`Unknown simulation type: ${type}`);

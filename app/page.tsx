@@ -12,16 +12,26 @@ import { SimulationFactory } from '@/lib/simulations/factory';
 
 export default function Simulation() {
     const [simulations, setSimulations] = useState<ISimulation[]>([
-        SimulationFactory.create('insulation2d', '1', '1: 2D Insulation'),
-        SimulationFactory.create('insulation3d', '2', '2: 3D Insulation'),
+        SimulationFactory.create(
+            'insulationGraph',
+            '1',
+            '1: Insulation Graph',
+            true
+        ),
+        SimulationFactory.create(
+            'insulationSimulation',
+            '2',
+            '2: Insulation Simulation',
+            false
+        ),
     ]);
     const activeSimulation = simulations.find((sim) => sim.active);
 
-    const addNewTab = (type: SimulationType) => {
+    const addNewTab = (type: SimulationType, name: string) => {
         const newId = (simulations.length + 1).toString();
         setSimulations((prev) => [
             ...prev.map((sim) => ({ ...sim, active: false })),
-            SimulationFactory.create(type, newId, `${newId}: ${type}`),
+            SimulationFactory.create(type, newId, `${newId}: ${name}`, true),
         ]);
     };
 

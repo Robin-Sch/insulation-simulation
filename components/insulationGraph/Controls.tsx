@@ -5,17 +5,17 @@ import Slider from '../controls/Slider';
 
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import {
-    Insulation2DConfig,
-    Insulation2DLayer,
+    InsulationGraphConfig,
+    InsulationGraphLayer,
     secondsToHms,
-} from '@/lib/simulations/insulation2d';
+} from '@/lib/simulations/insulationGraph';
 
-export default function I2D_Controls({
+export default function InsulationGraph_Controls({
     config,
     onConfigChange,
 }: {
-    config: Insulation2DConfig;
-    onConfigChange: (updates: Partial<Insulation2DConfig>) => void;
+    config: InsulationGraphConfig;
+    onConfigChange: (updates: Partial<InsulationGraphConfig>) => void;
 }) {
     const [showHelp, setShowHelp] = useState(false);
     const [newMaterial, setNewMaterial] = useState<
@@ -23,18 +23,18 @@ export default function I2D_Controls({
     >('Select material');
     const [newThickness, setNewThickness] = useState(50);
 
-    const handleLayerChange = <K extends keyof Insulation2DLayer>(
+    const handleLayerChange = <K extends keyof InsulationGraphLayer>(
         index: number,
         key: K,
-        value: Insulation2DLayer[K]
+        value: InsulationGraphLayer[K]
     ) => {
         config.layers[index][key] = value;
         onConfigChange({ layers: config.layers });
     };
 
-    const handleConfigChange = <K extends keyof Insulation2DConfig>(
+    const handleConfigChange = <K extends keyof InsulationGraphConfig>(
         key: K,
-        value: Insulation2DConfig[K]
+        value: InsulationGraphConfig[K]
     ) => {
         onConfigChange({ [key]: value });
     };
@@ -42,7 +42,7 @@ export default function I2D_Controls({
     const handleLayerAdd = () => {
         if (newMaterial === 'Select material') return; // No material selected
 
-        const newLayer: Insulation2DLayer = {
+        const newLayer: InsulationGraphLayer = {
             material: newMaterial,
             thickness: newThickness,
         };

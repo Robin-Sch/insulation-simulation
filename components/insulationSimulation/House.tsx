@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 
-export default function I3D_House({ thickness }: { thickness: number }) {
+export default function InsulationSimulation_House({
+    thickness,
+}: {
+    thickness: number;
+}) {
     const houseSize = useMemo(
         () => ({ width: 1.5, height: 1.5, depth: 1.5 }),
         []

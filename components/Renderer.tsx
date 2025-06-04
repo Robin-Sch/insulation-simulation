@@ -3,50 +3,50 @@ import { OrbitControls, Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 
 import Grid from './Grid';
-import I2D_Chart from './insulation2d/I2D_Chart';
-import I2D_Layers from './insulation2d/I2D_Layers';
-import I3D_HeatSimulation from './insulation3d/I3D_HeatSimulation';
-import I3D_House from './insulation3d/I3D_House';
+import InsulationGraph_Chart from './insulationGraph/Graph';
+import InsulationGraph_Layers from './insulationGraph/Layers';
+import InsulationSimulation_HeatSimulation from './insulationSimulation/Simulation';
+import InsulationSimulation_House from './insulationSimulation/House';
 
 import { ISimulation } from '@/lib/constants';
-import { Insulation2D } from '@/lib/simulations/insulation2d';
-import { Insulation3D } from '@/lib/simulations/insulation3d';
+import { InsulationGraph } from '@/lib/simulations/insulationGraph';
+import { InsulationSimulation } from '@/lib/simulations/insulationSimulation';
 
 export default function Renderer({ simulation }: { simulation: ISimulation }) {
-    const [insulation2dBoundaryTemp, setInsulation2dBoundaryTemp] = useState<
-        number[]
-    >([]);
+    const [insulationGraphBoundaryTemp, setInsulationGraphBoundaryTemp] =
+        useState<number[]>([]);
 
     return (
         <>
-            {simulation.type === 'insulation2d' && (
+            {simulation.type === 'insulationGraph' && (
                 <div className="pl-68 flex flex-col w-full h-full">
                     <div className="p-4 flex-none">
-                        <I2D_Layers
-                            config={(simulation as Insulation2D).config}
-                            boundaryTemp={insulation2dBoundaryTemp}
+                        <InsulationGraph_Layers
+                            config={(simulation as InsulationGraph).config}
+                            boundaryTemp={insulationGraphBoundaryTemp}
                         />
                     </div>
 
                     <div className="p-4 flex-1 w-full">
-                        <I2D_Chart
-                            config={(simulation as Insulation2D).config}
-                            setBoundaryTemp={setInsulation2dBoundaryTemp}
+                        <InsulationGraph_Chart
+                            config={(simulation as InsulationGraph).config}
+                            setBoundaryTemp={setInsulationGraphBoundaryTemp}
                         />
                     </div>
                 </div>
             )}
 
-            {simulation.type === 'insulation3d' && (
+            {simulation.type === 'insulationSimulation' && (
                 <Canvas camera={{ position: [3, 3, 3] }}>
                     <ambientLight intensity={3} />
-                    <I3D_House
+                    <InsulationSimulation_House
                         thickness={
-                            (simulation as Insulation3D).config.thickness
+                            (simulation as InsulationSimulation).config
+                                .thickness
                         }
                     />
-                    <I3D_HeatSimulation
-                        config={(simulation as Insulation3D).config}
+                    <InsulationSimulation_HeatSimulation
+                        config={(simulation as InsulationSimulation).config}
                     />
                     <OrbitControls
                         makeDefault
@@ -55,8 +55,12 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
                         autoRotate={true}
                         autoRotateSpeed={1}
                     />
-                    {(simulation as Insulation3D).config.showFps && <Stats />}
-                    {(simulation as Insulation3D).config.showGrid && <Grid />}
+                    {(simulation as InsulationSimulation).config.showFps && (
+                        <Stats />
+                    )}
+                    {(simulation as InsulationSimulation).config.showGrid && (
+                        <Grid />
+                    )}
                 </Canvas>
             )}
         </>

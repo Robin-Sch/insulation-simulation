@@ -9,7 +9,7 @@ import {
 } from 'three';
 
 import { airConductivity, INSULATION_TYPES } from '@/lib/constants';
-import { Insulation3DConfig } from '@/lib/simulations/insulation3d';
+import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
 
 function insideHouse(
     x: number,
@@ -40,10 +40,10 @@ function insideHouseOrInsulation(
     return -w <= x && x <= w && -d <= y && y <= d && -h <= z && z <= h;
 }
 
-export default function I3D_HeatSimulation({
+export default function InsulationSimulation_Simulation({
     config,
 }: {
-    config: Insulation3DConfig;
+    config: InsulationSimulationConfig;
 }) {
     const meshRef = useRef<Mesh>(null);
     const [heatData, setHeatData] = useState<number[][]>([]);

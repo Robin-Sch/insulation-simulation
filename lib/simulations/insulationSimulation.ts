@@ -1,6 +1,6 @@
 import { InsulationType, ISimulation } from '../constants';
 
-export interface Insulation3DConfig {
+export interface InsulationSimulationConfig {
     showGrid: boolean;
     showFps: boolean;
     running: boolean;
@@ -10,13 +10,13 @@ export interface Insulation3DConfig {
     resolution: number;
     houseSize: { width: number; height: number; depth: number };
 }
-export class Insulation3D implements ISimulation {
-    type = 'insulation3d' as const;
+export class InsulationSimulation implements ISimulation {
+    type = 'insulationSimulation' as const;
 
     constructor(
         public id: string,
         public title: string,
         public active: boolean,
-        public config: Insulation3DConfig
+        public config: InsulationSimulationConfig
     ) {}
 }

@@ -1,24 +1,24 @@
 import { InsulationType, ISimulation } from '../constants';
 
-export interface Insulation2DLayer {
+export interface InsulationGraphLayer {
     material: InsulationType;
     thickness: number; // cm
 }
-export interface Insulation2DConfig {
-    layers: Insulation2DLayer[];
+export interface InsulationGraphConfig {
+    layers: InsulationGraphLayer[];
     insideTemp: number;
     outsideTemp: number;
     duration: number;
     steps: number;
 }
-export class Insulation2D implements ISimulation {
-    type = 'insulation2d' as const;
+export class InsulationGraph implements ISimulation {
+    type = 'insulationGraph' as const;
 
     constructor(
         public id: string,
         public title: string,
         public active: boolean,
-        public config: Insulation2DConfig
+        public config: InsulationGraphConfig
     ) {}
 }
 

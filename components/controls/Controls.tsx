@@ -1,9 +1,9 @@
-import I2D_Controls from '../insulation2d/I2D_Controls';
-import I3D_Controls from '../insulation3d/I3D_Controls';
+import InsulationGraph_Controls from '../insulationGraph/Controls';
+import InsulationSimulation_Controls from '../insulationSimulation/Controls';
 
 import { ISimulation } from '@/lib/constants';
-import { Insulation2D } from '@/lib/simulations/insulation2d';
-import { Insulation3D } from '@/lib/simulations/insulation3d';
+import { InsulationGraph } from '@/lib/simulations/insulationGraph';
+import { InsulationSimulation } from '@/lib/simulations/insulationSimulation';
 
 export default function Controls({
     simulation,
@@ -14,16 +14,16 @@ export default function Controls({
 }) {
     return (
         <>
-            {simulation.type === 'insulation3d' && (
-                <I3D_Controls
-                    config={(simulation as Insulation3D).config}
+            {simulation.type === 'insulationGraph' && (
+                <InsulationGraph_Controls
+                    config={(simulation as InsulationGraph).config}
                     onConfigChange={onConfigChange}
                 />
             )}
 
-            {simulation.type === 'insulation2d' && (
-                <I2D_Controls
-                    config={(simulation as Insulation2D).config}
+            {simulation.type === 'insulationSimulation' && (
+                <InsulationSimulation_Controls
+                    config={(simulation as InsulationSimulation).config}
                     onConfigChange={onConfigChange}
                 />
             )}

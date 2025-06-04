@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { SimulationType } from '@/lib/constants';
 
 interface TypeMenuProps {
-    onSelectType: (type: SimulationType) => void;
+    onSelectType: (type: SimulationType, name: string) => void;
 }
 
 export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
@@ -15,14 +15,16 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
         description: string;
     }[] = [
         {
-            type: 'insulation3d',
-            name: '3D Insulation',
-            description: '3d',
+            type: 'insulationGraph',
+            name: 'Insulation Graph',
+            description:
+                'Graph showing temperature inside insulation material over time',
         },
         {
-            type: 'insulation2d',
-            name: '2D Insulation',
-            description: '2d',
+            type: 'insulationSimulation',
+            name: 'Insulation Simulation',
+            description:
+                'Simulation showing heat spread through insulation material',
         },
     ];
 
@@ -54,7 +56,10 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
                                 <li key={simType.type}>
                                     <button
                                         onClick={() => {
-                                            onSelectType(simType.type);
+                                            onSelectType(
+                                                simType.type,
+                                                simType.name
+                                            );
                                             setIsOpen(false);
                                         }}
                                         className="w-full text-left px-4 py-2 hover:bg-gray-700 flex items-start space-x-3"
