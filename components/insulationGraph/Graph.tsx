@@ -12,7 +12,11 @@ import { Line } from 'react-chartjs-2';
 import { makeConnection, makeNode, run } from 'hotstuff-network';
 import { useEffect, useState } from 'react';
 
-import { getInsulation, InsulationType } from '@/lib/constants';
+import {
+    airConductivity,
+    getInsulation,
+    InsulationType,
+} from '@/lib/constants';
 import {
     InsulationGraphConfig,
     secondsToHms,
@@ -86,15 +90,30 @@ export default function InsulationGraph_Graph({
             ...config.layers.map((layer) =>
                 makeNode({
                     name: layer.material,
-                    temperatureDegC: config.outsideTemp,
+                    temperatureDegC:
+                        (config.insideTemp + config.outsideTemp) / 2,
                     capacitanceJPerDegK: 10000,
                     powerGenW: 0,
                     isBoundary: false,
                 })
             ),
+            makeNode({
+                name: 'Outside',
+                temperatureDegC: config.outsideTemp,
+                capacitanceJPerDegK: 10000,
+                powerGenW: 0,
+                isBoundary: true,
+            }),
         ];
 
-        const connections = [];
+        const connections = [
+            makeConnection({
+                firstNode: nodes[nodes.length - 2],
+                secondNode: nodes[nodes.length - 1],
+                resistanceDegKPerW: 1 / airConductivity,
+                kind: 'cond',
+            }),
+        ];
         for (let i = 0; i < config.layers.length; i++) {
             const layer = config.layers[i];
             const material = getInsulation(layer.material);
@@ -121,7 +140,8 @@ export default function InsulationGraph_Graph({
             label: nodeResult.node.name,
             data: nodeResult.tempDegC,
             borderColor:
-                nodeResult.node.name === 'Inside'
+                nodeResult.node.name === 'Inside' ||
+                nodeResult.node.name === 'Outside'
                     ? 'black'
                     : getInsulation(nodeResult.node.name as InsulationType)
                           .color,
