@@ -1,6 +1,7 @@
 {
   "name": "insulation-simulation",
   "version": "1.0.0",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev --turbopack",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
