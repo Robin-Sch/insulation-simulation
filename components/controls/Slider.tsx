@@ -37,7 +37,7 @@ export default function Slider({
                 max={max}
                 step={step}
                 value={value}
-                onChange={(e) => onChange(e.target.value as unknown as number)}
+                onChange={(e) => onChange(parseFloat(e.target.value))}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
             />
             <div className="flex justify-between text-xs mt-1">
