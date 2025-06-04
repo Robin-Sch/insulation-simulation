@@ -1,6 +1,7 @@
 import { InsulationType, ISimulation } from '../constants';
 
 export interface InsulationSimulationConfig {
+    showHouse: boolean;
     showGrid: boolean;
     showFps: boolean;
     running: boolean;

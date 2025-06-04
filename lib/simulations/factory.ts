@@ -25,6 +25,7 @@ export class SimulationFactory {
                 });
             case 'insulationSimulation':
                 return new InsulationSimulation(id, title, active, {
+                    showHouse: true,
                     showGrid: false,
                     showFps: false,
                     running: false,

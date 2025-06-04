@@ -147,6 +147,21 @@ export default function InsulationSimulation_Controls({
             <div className="flex items-center mt-4">
                 <input
                     type="checkbox"
+                    id="show-house"
+                    checked={config.showHouse}
+                    onChange={(e) =>
+                        handleConfigChange('showHouse', e.target.checked)
+                    }
+                    className="h-4 w-4 border-gray-300 rounded"
+                />
+                <label htmlFor="show-showHouse" className="ml-2 block text-sm">
+                    Show House
+                </label>
+            </div>
+
+            <div className="flex items-center mt-4">
+                <input
+                    type="checkbox"
                     id="show-grid"
                     checked={config.showGrid}
                     onChange={(e) =>

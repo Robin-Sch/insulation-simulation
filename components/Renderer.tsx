@@ -39,12 +39,14 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
             {simulation.type === 'insulationSimulation' && (
                 <Canvas camera={{ position: [3, 3, 3] }}>
                     <ambientLight intensity={3} />
-                    <InsulationSimulation_House
-                        thickness={
-                            (simulation as InsulationSimulation).config
-                                .thickness
-                        }
-                    />
+                    {(simulation as InsulationSimulation).config.showHouse && (
+                        <InsulationSimulation_House
+                            thickness={
+                                (simulation as InsulationSimulation).config
+                                    .thickness
+                            }
+                        />
+                    )}
                     <InsulationSimulation_HeatSimulation
                         config={(simulation as InsulationSimulation).config}
                     />
