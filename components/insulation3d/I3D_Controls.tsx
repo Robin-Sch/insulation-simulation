@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Select from '../controls/Select';
 import Slider from '../controls/Slider';
 
@@ -11,6 +13,8 @@ export default function I3D_Controls({
     config: Insulation3DConfig;
     onConfigChange: (updates: Partial<Insulation3DConfig>) => void;
 }) {
+    const [showHelp, setShowHelp] = useState(false);
+
     const handleConfigChange = <K extends keyof Insulation3DConfig>(
         key: K,
         value: Insulation3DConfig[K]
@@ -18,16 +22,60 @@ export default function I3D_Controls({
         onConfigChange({ [key]: value });
     };
 
+    if (showHelp)
+        return (
+            <div className="rounded-lg">
+                <p className="mb-4">
+                    This simulation models heat transfer through insulation
+                    materials using Fourier&apos;s Law. For each point, it uses
+                    the formula below to calculate the heat spread up, down,
+                    left and right and changes the temperature accordingly.
+                </p>
+                <pre className="bg-gray-500 p-2 rounded mb-4">
+                    q = -k·(ΔT/Δx)
+                </pre>
+                <p className="mb-2">Where:</p>
+                <ul className="list-disc pl-5 mb-4">
+                    <li>q = heat transfer rate (W)</li>
+                    <li>k = thermal conductivity (W/mK)</li>
+                    <li>ΔT = temperature difference</li>
+                    <li>Δx = thickness of material</li>
+                </ul>
+                <p>
+                    There are two cubes and a blue-red gradient plane. The
+                    darker cube indicates the walls/the house, whereas the
+                    lighter one indicates the insulation material. Using the
+                    gradient of the plane, you can see the heat spread from the
+                    house (20°C) to the outside (10°C)
+                </p>
+                <button
+                    onClick={() => setShowHelp(false)}
+                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                >
+                    Close
+                </button>
+            </div>
+        );
+
     return (
         <>
-            <div className="mt-4">
+            <h2 className="text-2xl font-bold mb-4">Controls</h2>
+            <div className="mt-4 flex gap-2">
                 <button
                     onClick={() =>
                         handleConfigChange('running', !config.running)
                     }
-                    className={`${config.running ? 'bg-red-600' : 'bg-blue-600'} ${config.running ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded`}
+                    className={`${config.running ? 'bg-red-600' : 'bg-blue-600'} ${config.running ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded flex-1`}
                 >
                     {config.running ? 'Stop simulation' : 'Start simulation'}
+                </button>
+
+                <button
+                    onClick={() => setShowHelp(true)}
+                    className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded"
+                    title="Simulation Information"
+                >
+                    Info
                 </button>
             </div>
 

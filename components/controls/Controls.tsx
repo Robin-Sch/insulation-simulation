@@ -14,8 +14,6 @@ export default function Controls({
 }) {
     return (
         <>
-            <h2 className="text-2xl font-bold mb-4">Controls</h2>
-
             {simulation.type === 'insulation3d' && (
                 <I3D_Controls
                     config={(simulation as Insulation3D).config}

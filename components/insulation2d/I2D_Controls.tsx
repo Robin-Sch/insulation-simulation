@@ -17,6 +17,7 @@ export default function I2D_Controls({
     config: Insulation2DConfig;
     onConfigChange: (updates: Partial<Insulation2DConfig>) => void;
 }) {
+    const [showHelp, setShowHelp] = useState(false);
     const [newMaterial, setNewMaterial] = useState<
         InsulationType | 'Select material'
     >('Select material');
@@ -51,8 +52,42 @@ export default function I2D_Controls({
         });
     };
 
+    if (showHelp)
+        return (
+            <div className="rounded-lg">
+                <p className="mb-4">
+                    This simulation shows the temperature of the inside of the
+                    house (left side) and of each insulation material (over
+                    time). It is based on the work of{' '}
+                    <a href="https://theleo.zone/thermal-model/">
+                        http://thermalmodel.com/
+                    </a>
+                    , which explains how it works in depth under the
+                    &quot;Theory&quot; button. Note that we only use thermal
+                    conductivity and do not use convection nor radiation.
+                </p>
+                <button
+                    onClick={() => setShowHelp(false)}
+                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                >
+                    Close
+                </button>
+            </div>
+        );
+
     return (
         <>
+            <h2 className="text-2xl font-bold mb-4">Controls</h2>
+            <div className="mt-4 flex gap-2">
+                <button
+                    onClick={() => setShowHelp(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded"
+                    title="Information"
+                >
+                    Info
+                </button>
+            </div>
+
             <Slider
                 name="Initial inside temp"
                 min={0}
