@@ -1,3 +1,8 @@
+import { useState } from 'react';
+
+import Select from '../controls/Select';
+import Slider from '../controls/Slider';
+
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import {
     Insulation2DConfig,
@@ -12,6 +17,11 @@ export default function I2D_Controls({
     config: Insulation2DConfig;
     onConfigChange: (updates: Partial<Insulation2DConfig>) => void;
 }) {
+    const [newMaterial, setNewMaterial] = useState<
+        InsulationType | 'Select material'
+    >('Select material');
+    const [newThickness, setNewThickness] = useState(50);
+
     const handleLayerChange = <K extends keyof Insulation2DLayer>(
         index: number,
         key: K,
@@ -29,19 +39,11 @@ export default function I2D_Controls({
     };
 
     const handleLayerAdd = () => {
-        const selectedMaterial = document.querySelector<HTMLSelectElement>(
-            'select[name="newLayerMaterial"]'
-        )?.value as InsulationType;
-        const selectedThickness =
-            document.querySelector<HTMLInputElement>(
-                'input[name="newLayerThickness"]'
-            )?.valueAsNumber || 50;
-
-        if (!selectedMaterial) return; // No material selected
+        if (newMaterial === 'Select material') return; // No material selected
 
         const newLayer: Insulation2DLayer = {
-            material: selectedMaterial,
-            thickness: selectedThickness,
+            material: newMaterial,
+            thickness: newThickness,
         };
 
         onConfigChange({
@@ -51,200 +53,69 @@ export default function I2D_Controls({
 
     return (
         <>
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Initial inside temp
-                        <span className="help-tooltip group relative ml-1">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Initial temperature on the interior (left) side
-                                of the wall (0-30°C)
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.insideTemp}°C
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="30"
-                    step="5"
-                    value={config.insideTemp}
-                    onChange={(e) =>
-                        handleConfigChange(
-                            'insideTemp',
-                            parseInt(e.target.value)
-                        )
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>0°C</span>
-                    <span>30°C</span>
-                </div>
-            </div>
+            <Slider
+                name="Initial inside temp"
+                min={0}
+                max={30}
+                step={5}
+                value={config.insideTemp}
+                help="Initial temperature on the interior (left) side of the wall"
+                unit={(value) => value.toString() + '°C'}
+                onChange={(value) => handleConfigChange('insideTemp', value)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Initial outside temp
-                        <span className="help-tooltip group relative ml-1">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Initial temperature on the exterior (right) side
-                                of the wall (0-30°C)
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.outsideTemp}°C
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="30"
-                    step="5"
-                    value={config.outsideTemp}
-                    onChange={(e) =>
-                        handleConfigChange(
-                            'outsideTemp',
-                            parseInt(e.target.value)
-                        )
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>0°C</span>
-                    <span>30°C</span>
-                </div>
-            </div>
+            <Slider
+                name="Initial outside temp"
+                min={0}
+                max={30}
+                step={5}
+                value={config.outsideTemp}
+                unit={(value) => value.toString() + '°C'}
+                help="Initial temperature on the exterior (right) side of the wall"
+                onChange={(value) => handleConfigChange('outsideTemp', value)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Duration
-                        <span className="help-tooltip group relative ml-1">
-                            <span className="text-xs cursor-help">(?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Simulation duration (1 minute to 1.5 days)
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {secondsToHms(config.duration)}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min={60}
-                    max={60 * 60 * 24 * 1.5}
-                    step={60 * 5}
-                    value={config.duration}
-                    onChange={(e) =>
-                        handleConfigChange('duration', parseInt(e.target.value))
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>1 minute</span>
-                    <span>{secondsToHms(60 * 60 * 24 * 1.5)}</span>
-                </div>
-            </div>
+            <Slider
+                name="Duration"
+                min={60}
+                max={60 * 60 * 24 * 1.5}
+                step={60 * 5}
+                value={config.duration}
+                help="Duration of the graph/simulation"
+                unit={secondsToHms}
+                onChange={(value) => handleConfigChange('duration', value)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Steps
-                        <span className="help-tooltip group relative ml-1">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Number of in-between calculation steps
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.steps}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="5"
-                    max="100"
-                    step="1"
-                    value={config.steps}
-                    onChange={(e) =>
-                        handleConfigChange('steps', parseInt(e.target.value))
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>1</span>
-                    <span>100</span>
-                </div>
-            </div>
+            <Slider
+                name="Steps"
+                min={5}
+                max={100}
+                step={1}
+                value={config.steps}
+                help="Number of in-between calculation steps"
+                unit={(value) => value.toString()}
+                onChange={(value) => handleConfigChange('steps', value)}
+            />
 
             <h2 className="text-xl font-bold mb-4">Add new</h2>
-            <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">
-                    Insulation Type
-                    <span className="help-tooltip group relative ml-1">
-                        <span className="text-xs cursor-help"> (?)</span>
-                        <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                            Material type affects thermal conductivity (λ)
-                        </span>
-                    </span>
-                </label>
-                <select
-                    name="newLayerMaterial"
-                    defaultValue="Select material"
-                    className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                >
-                    <option value="" disabled>
-                        Select material
-                    </option>
-                    {Object.keys(INSULATION_TYPES).map((type) => (
-                        <option
-                            key={type}
-                            value={type}
-                            className="text-gray-800"
-                        >
-                            {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <Select
+                name="Insulation Type"
+                value={newMaterial}
+                options={Object.keys(INSULATION_TYPES)}
+                help="Material type affects thermal conductivity (λ) (lower is better)"
+                onChange={(value) => setNewMaterial(value as InsulationType)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Thickness
-                        <span className="help-tooltip group relative ml-1">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Thickness of new layer (10-100cm)
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">50 cm</span>
-                </div>
-                <input
-                    name="newLayerThickness"
-                    type="range"
-                    min="10"
-                    max="100"
-                    step="5"
-                    defaultValue="50"
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>10cm</span>
-                    <span>100cm</span>
-                </div>
-            </div>
+            <Slider
+                name="Thickness"
+                min={10}
+                max={100}
+                step={5}
+                value={newThickness}
+                help="Thickness of new layer (higher is better)"
+                unit={(value) => value.toString() + ' cm'}
+                onChange={setNewThickness}
+            />
 
             <button
                 onClick={handleLayerAdd}
@@ -256,63 +127,32 @@ export default function I2D_Controls({
             <h2 className="text-xl font-bold mb-4">Modify existing</h2>
             {config.layers.map((layer, i) => (
                 <div key={`layer-${i}`}>
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium mb-2">
-                            Insulation Type
-                        </label>
-                        <select
-                            className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                            value={layer.material}
-                            onChange={(e) =>
-                                handleLayerChange(
-                                    i,
-                                    'material',
-                                    e.target.value as InsulationType
-                                )
-                            }
-                        >
-                            {Object.keys(INSULATION_TYPES).map((type) => (
-                                <option
-                                    key={type}
-                                    value={type}
-                                    className="text-gray-800"
-                                >
-                                    {type.charAt(0).toUpperCase() +
-                                        type.slice(1)}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <Select
+                        name="Insulation Type"
+                        value={layer.material}
+                        options={Object.keys(INSULATION_TYPES)}
+                        help="Material type affects thermal conductivity (λ) (lower is better)"
+                        onChange={(value) =>
+                            handleLayerChange(
+                                i,
+                                'material',
+                                value as InsulationType
+                            )
+                        }
+                    />
 
-                    <div>
-                        <div className="flex justify-between items-center mb-2">
-                            <label className="block text-sm font-medium">
-                                Thickness
-                            </label>
-                            <span className="text-sm font-semibold">
-                                {layer.thickness} cm
-                            </span>
-                        </div>
-                        <input
-                            type="range"
-                            min="10"
-                            max="100"
-                            step="5"
-                            value={layer.thickness}
-                            onChange={(e) =>
-                                handleLayerChange(
-                                    i,
-                                    'thickness',
-                                    parseFloat(e.target.value)
-                                )
-                            }
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                        />
-                        <div className="flex justify-between text-xs mt-1">
-                            <span>10cm</span>
-                            <span>100cm</span>
-                        </div>
-                    </div>
+                    <Slider
+                        name="Thickness"
+                        min={10}
+                        max={100}
+                        step={5}
+                        value={layer.thickness}
+                        help="Thickness of insulation (higher is better)"
+                        unit={(value) => value.toString() + ' cm'}
+                        onChange={(value) =>
+                            handleLayerChange(i, 'thickness', value)
+                        }
+                    />
                 </div>
             ))}
         </>

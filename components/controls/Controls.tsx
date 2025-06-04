@@ -1,5 +1,5 @@
-import I2D_Controls from './insulation2d/I2D_Controls';
-import I3D_Controls from './insulation3d/I3D_Controls';
+import I2D_Controls from '../insulation2d/I2D_Controls';
+import I3D_Controls from '../insulation3d/I3D_Controls';
 
 import { ISimulation } from '@/lib/constants';
 import { Insulation2D } from '@/lib/simulations/insulation2d';

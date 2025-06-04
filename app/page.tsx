@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 
-import Controls from '@/components/Controls';
+import Controls from '@/components/controls/Controls';
 import Renderer from '@/components/Renderer';
 import Tab from '@/components/Tab';
 import { TypeMenu } from '@/components/TypeMenu';

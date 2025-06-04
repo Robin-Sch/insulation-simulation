@@ -1,3 +1,6 @@
+import Select from '../controls/Select';
+import Slider from '../controls/Slider';
+
 import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
 import { Insulation3DConfig } from '@/lib/simulations/insulation3d';
 
@@ -28,143 +31,48 @@ export default function I3D_Controls({
                 </button>
             </div>
 
-            <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">
-                    Insulation Type
-                    <span className="help-tooltip group relative">
-                        <span className="text-xs cursor-help"> (?)</span>
-                        <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                            Choose the insulation material. Different materials
-                            have varying thermal conductivity (λ).
-                        </span>
-                    </span>
-                </label>
-                <select
-                    className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                    value={config.material}
-                    onChange={(e) =>
-                        handleConfigChange(
-                            'material',
-                            e.target.value as InsulationType
-                        )
-                    }
-                >
-                    {Object.keys(INSULATION_TYPES).map((type) => (
-                        <option
-                            key={type}
-                            value={type}
-                            className="text-gray-800"
-                        >
-                            {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <Select
+                name="Insulation Type"
+                value={config.material}
+                options={Object.keys(INSULATION_TYPES)}
+                help="Material type affects thermal conductivity (λ) (lower is better)"
+                onChange={(value) =>
+                    handleConfigChange('material', value as InsulationType)
+                }
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Thickness
-                        <span className="help-tooltip group relative">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Adjusts the insulation thickness (10-100cm).
-                                Thicker insulation reduces heat transfer.
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.thickness} cm
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    step="5"
-                    value={config.thickness}
-                    onChange={(e) =>
-                        handleConfigChange(
-                            'thickness',
-                            parseFloat(e.target.value)
-                        )
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>10cm</span>
-                    <span>100cm</span>
-                </div>
-            </div>
+            <Slider
+                name="Thickness"
+                min={10}
+                max={100}
+                step={5}
+                value={config.thickness}
+                help="Thickness of insulation (higher is better)"
+                unit={(value) => value.toString() + ' cm'}
+                onChange={(value) => handleConfigChange('thickness', value)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Y height
-                        <span className="help-tooltip group relative">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Adjusts the vertical slice position (-1 to 1) to
-                                inspect the simulation cross-section.
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.yPlane}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="-1"
-                    max="1"
-                    step="0.1"
-                    value={config.yPlane}
-                    onChange={(e) =>
-                        handleConfigChange('yPlane', parseFloat(e.target.value))
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>-1</span>
-                    <span>1</span>
-                </div>
-            </div>
+            <Slider
+                name="Y height"
+                min={-1}
+                max={1}
+                step={0.1}
+                value={config.yPlane}
+                help="Adjusts the vertical slice position to inspect the simulation cross-section."
+                unit={(value) => value.toString()}
+                onChange={(value) => handleConfigChange('yPlane', value)}
+            />
 
-            <div>
-                <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium">
-                        Resolution
-                        <span className="help-tooltip group relative">
-                            <span className="text-xs cursor-help"> (?)</span>
-                            <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                                Higher values increase simulation detail but may
-                                reduce performance.
-                            </span>
-                        </span>
-                    </label>
-                    <span className="text-sm font-semibold">
-                        {config.resolution}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min="5"
-                    max="100"
-                    step="1"
-                    value={config.resolution}
-                    onChange={(e) =>
-                        handleConfigChange(
-                            'resolution',
-                            parseFloat(e.target.value)
-                        )
-                    }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs mt-1">
-                    <span>5</span>
-                    <span>100</span>
-                </div>
-            </div>
+            <Slider
+                name="Resolution"
+                min={5}
+                max={100}
+                step={1}
+                value={config.resolution}
+                help="Higher values increase simulation detail but reduce performance."
+                unit={(value) => value.toString()}
+                onChange={(value) => handleConfigChange('resolution', value)}
+            />
 
             <div
                 className="mt-4 p-3 rounded-md"
