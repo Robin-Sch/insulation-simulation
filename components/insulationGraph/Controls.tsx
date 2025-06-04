@@ -18,9 +18,9 @@ export default function InsulationGraph_Controls({
     onConfigChange: (updates: Partial<InsulationGraphConfig>) => void;
 }) {
     const [showHelp, setShowHelp] = useState(false);
-    const [newMaterial, setNewMaterial] = useState<
-        InsulationType | 'Select material'
-    >('Select material');
+    const [newMaterial, setNewMaterial] = useState<InsulationType>(
+        'Molded Expanded Polystyrene'
+    );
     const [newThickness, setNewThickness] = useState(50);
 
     const handleLayerChange = <K extends keyof InsulationGraphLayer>(
@@ -40,8 +40,6 @@ export default function InsulationGraph_Controls({
     };
 
     const handleLayerAdd = () => {
-        if (newMaterial === 'Select material') return; // No material selected
-
         const newLayer: InsulationGraphLayer = {
             material: newMaterial,
             thickness: newThickness,
@@ -56,15 +54,17 @@ export default function InsulationGraph_Controls({
         return (
             <div className="rounded-lg">
                 <p className="mb-4">
-                    This simulation shows the temperature of the inside of the
-                    house (left side) and of each insulation material (over
-                    time). It is based on the work of{' '}
+                    This graph shows the temperature of the inside of the house
+                    (left side) and of each insulation material (over time). It
+                    is based on the work of{' '}
                     <a href="https://theleo.zone/thermal-model/">
                         http://thermalmodel.com/
                     </a>
                     , which explains how it works in depth under the
                     &quot;Theory&quot; button. Note that we only use thermal
-                    conductivity and do not use convection nor radiation.
+                    conductivity and do not use convection nor radiation, which
+                    limits the usefulness. Nonetheless, it allows you to easily
+                    compare different types of insulation materials.
                 </p>
                 <button
                     onClick={() => setShowHelp(false)}
@@ -136,7 +136,7 @@ export default function InsulationGraph_Controls({
             <Select
                 name="Insulation Type"
                 value={newMaterial}
-                options={Object.keys(INSULATION_TYPES)}
+                options={INSULATION_TYPES.map((opt) => opt.name)}
                 help="Material type affects thermal conductivity (λ) (lower is better)"
                 onChange={(value) => setNewMaterial(value as InsulationType)}
             />
@@ -165,7 +165,7 @@ export default function InsulationGraph_Controls({
                     <Select
                         name="Insulation Type"
                         value={layer.material}
-                        options={Object.keys(INSULATION_TYPES)}
+                        options={INSULATION_TYPES.map((opt) => opt.name)}
                         help="Material type affects thermal conductivity (λ) (lower is better)"
                         onChange={(value) =>
                             handleLayerChange(

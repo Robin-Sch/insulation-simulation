@@ -12,7 +12,7 @@ import { Line } from 'react-chartjs-2';
 import { makeConnection, makeNode, run } from 'hotstuff-network';
 import { useEffect, useState } from 'react';
 
-import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
+import { getInsulation, InsulationType } from '@/lib/constants';
 import {
     InsulationGraphConfig,
     secondsToHms,
@@ -97,7 +97,7 @@ export default function InsulationGraph_Graph({
         const connections = [];
         for (let i = 0; i < config.layers.length; i++) {
             const layer = config.layers[i];
-            const material = INSULATION_TYPES[layer.material];
+            const material = getInsulation(layer.material);
 
             const connection = makeConnection({
                 firstNode: nodes[i],
@@ -123,7 +123,7 @@ export default function InsulationGraph_Graph({
             borderColor:
                 nodeResult.node.name === 'Inside'
                     ? 'black'
-                    : INSULATION_TYPES[nodeResult.node.name as InsulationType]
+                    : getInsulation(nodeResult.node.name as InsulationType)
                           .color,
         }));
         setData({

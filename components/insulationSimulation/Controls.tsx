@@ -3,7 +3,11 @@ import { useState } from 'react';
 import Select from '../controls/Select';
 import Slider from '../controls/Slider';
 
-import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
+import {
+    getInsulation,
+    INSULATION_TYPES,
+    InsulationType,
+} from '@/lib/constants';
 import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
 
 export default function InsulationSimulation_Controls({
@@ -82,7 +86,7 @@ export default function InsulationSimulation_Controls({
             <Select
                 name="Insulation Type"
                 value={config.material}
-                options={Object.keys(INSULATION_TYPES)}
+                options={INSULATION_TYPES.map((opt) => opt.name)}
                 help="Material type affects thermal conductivity (λ) (lower is better)"
                 onChange={(value) =>
                     handleConfigChange('material', value as InsulationType)
@@ -125,16 +129,16 @@ export default function InsulationSimulation_Controls({
             <div
                 className="mt-4 p-3 rounded-md"
                 style={{
-                    backgroundColor: INSULATION_TYPES[config.material].color,
+                    backgroundColor: getInsulation(config.material).color,
                 }}
             >
                 <p className="text-sm text-gray-700 font-semibold">
-                    {INSULATION_TYPES[config.material].name}
+                    {config.material}
                 </p>
                 <p className="text-sm text-gray-700">
                     λ={' '}
                     <span className="font-semibold">
-                        {INSULATION_TYPES[config.material].conductivity}
+                        {getInsulation(config.material).conductivity}
                     </span>{' '}
                     W/mK
                 </p>

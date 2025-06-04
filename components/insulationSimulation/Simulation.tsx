@@ -8,7 +8,7 @@ import {
     PlaneGeometry,
 } from 'three';
 
-import { airConductivity, INSULATION_TYPES } from '@/lib/constants';
+import { airConductivity, getInsulation } from '@/lib/constants';
 import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
 
 function insideHouse(
@@ -144,7 +144,7 @@ export default function InsulationSimulation_Simulation({
 
     // Initialize heat data with central heat source
     useEffect(() => {
-        setIC(INSULATION_TYPES[config.material].conductivity);
+        setIC(getInsulation(config.material).conductivity);
         // resolution x resolution array with 0's
         const data: number[][] = new Array(config.resolution)
             .fill(0)

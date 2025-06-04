@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { INSULATION_TYPES } from '@/lib/constants';
+import { getInsulation } from '@/lib/constants';
 import { InsulationGraphConfig } from '@/lib/simulations/insulationGraph';
 
 export default function InsulationGraph_Layers({
@@ -23,7 +23,8 @@ export default function InsulationGraph_Layers({
         <div className="flex flex-col">
             <div className="flex h-24 items-center border rounded-md shadow-sm">
                 {config.layers.map((layer, i) => {
-                    const color = INSULATION_TYPES[layer.material].color;
+                    const details = getInsulation(layer.material);
+                    const { name, color } = details;
                     const width = (layer.thickness / totalThick) * 100;
 
                     return (
@@ -34,11 +35,11 @@ export default function InsulationGraph_Layers({
                                 width: `${width}%`,
                                 backgroundColor: color,
                             }}
-                            title={`${INSULATION_TYPES[layer.material].name} (${width}mm)`}
+                            title={`${name} (${width}mm)`}
                         >
                             {/* Layer label */}
                             <span className="text-xs p-1 text-center">
-                                {INSULATION_TYPES[layer.material].name}
+                                {name}
                             </span>
                         </div>
                     );

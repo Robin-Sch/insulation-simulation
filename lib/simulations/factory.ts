@@ -14,7 +14,7 @@ export class SimulationFactory {
                 return new InsulationGraph(id, title, active, {
                     layers: [
                         {
-                            material: 'eps',
+                            material: 'Molded Expanded Polystyrene',
                             thickness: 30,
                         },
                     ],
@@ -28,7 +28,7 @@ export class SimulationFactory {
                     showGrid: false,
                     showFps: false,
                     running: false,
-                    material: 'eps',
+                    material: 'Molded Expanded Polystyrene',
                     thickness: 30,
                     yPlane: 0.7,
                     resolution: 50,
