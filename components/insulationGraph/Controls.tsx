@@ -3,12 +3,12 @@ import { useState } from 'react';
 import Select from '../controls/Select';
 import Slider from '../controls/Slider';
 
-import { INSULATION_TYPES, InsulationType } from '@/lib/constants';
+import { INSULATION_TYPES, InsulationType } from '../../lib/constants';
 import {
     InsulationGraphConfig,
     InsulationGraphLayer,
     secondsToHms,
-} from '@/lib/simulations/insulationGraph';
+} from '../../lib/simulations/insulationGraph';
 
 export default function InsulationGraph_Controls({
     config,

@@ -16,11 +16,11 @@ import {
     airConductivity,
     getInsulation,
     InsulationType,
-} from '@/lib/constants';
+} from '../../lib/constants';
 import {
     InsulationGraphConfig,
     secondsToHms,
-} from '@/lib/simulations/insulationGraph';
+} from '../../lib/simulations/insulationGraph';
 
 ChartJS.register(
     CategoryScale,

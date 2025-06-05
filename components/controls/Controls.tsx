@@ -1,9 +1,9 @@
 import InsulationGraph_Controls from '../insulationGraph/Controls';
 import InsulationSimulation_Controls from '../insulationSimulation/Controls';
 
-import { ISimulation } from '@/lib/constants';
-import { InsulationGraph } from '@/lib/simulations/insulationGraph';
-import { InsulationSimulation } from '@/lib/simulations/insulationSimulation';
+import { ISimulation } from '../../lib/constants';
+import { InsulationGraph } from '../../lib/simulations/insulationGraph';
+import { InsulationSimulation } from '../../lib/simulations/insulationSimulation';
 
 export default function Controls({
     simulation,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { getInsulation } from '@/lib/constants';
-import { InsulationGraphConfig } from '@/lib/simulations/insulationGraph';
+import { getInsulation } from '../../lib/constants';
+import { InsulationGraphConfig } from '../../lib/simulations/insulationGraph';
 
 export default function InsulationGraph_Layers({
     config,

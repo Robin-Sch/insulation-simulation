@@ -2,13 +2,13 @@
 
 import { MouseEvent, useState } from 'react';
 
-import Controls from '@/components/controls/Controls';
-import Renderer from '@/components/Renderer';
-import Tab from '@/components/Tab';
-import { TypeMenu } from '@/components/TypeMenu';
+import Controls from '../components/controls/Controls';
+import Renderer from '../components/Renderer';
+import Tab from '../components/Tab';
+import { TypeMenu } from '../components/TypeMenu';
 
-import { CommonConfig, ISimulation, SimulationType } from '@/lib/constants';
-import { SimulationFactory } from '@/lib/simulations/factory';
+import { CommonConfig, ISimulation, SimulationType } from '../lib/constants';
+import { SimulationFactory } from '../lib/simulations/factory';
 
 export default function Simulation() {
     const [simulations, setSimulations] = useState<ISimulation[]>([

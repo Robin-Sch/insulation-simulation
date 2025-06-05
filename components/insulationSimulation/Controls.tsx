@@ -7,8 +7,8 @@ import {
     getInsulation,
     INSULATION_TYPES,
     InsulationType,
-} from '@/lib/constants';
-import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
+} from '../../lib/constants';
+import { InsulationSimulationConfig } from '../../lib/simulations/insulationSimulation';
 
 export default function InsulationSimulation_Controls({
     config,

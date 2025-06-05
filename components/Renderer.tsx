@@ -8,9 +8,9 @@ import InsulationGraph_Layers from './insulationGraph/Layers';
 import InsulationSimulation_HeatSimulation from './insulationSimulation/Simulation';
 import InsulationSimulation_House from './insulationSimulation/House';
 
-import { ISimulation } from '@/lib/constants';
-import { InsulationGraph } from '@/lib/simulations/insulationGraph';
-import { InsulationSimulation } from '@/lib/simulations/insulationSimulation';
+import { ISimulation } from '../lib/constants';
+import { InsulationGraph } from '../lib/simulations/insulationGraph';
+import { InsulationSimulation } from '../lib/simulations/insulationSimulation';
 
 export default function Renderer({ simulation }: { simulation: ISimulation }) {
     const [insulationGraphBoundaryTemp, setInsulationGraphBoundaryTemp] =

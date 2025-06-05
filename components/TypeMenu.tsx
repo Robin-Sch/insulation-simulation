@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SimulationType } from '@/lib/constants';
+import { SimulationType } from '../lib/constants';
 
 interface TypeMenuProps {
     onSelectType: (type: SimulationType, name: string) => void;

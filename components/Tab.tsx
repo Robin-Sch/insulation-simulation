@@ -1,6 +1,6 @@
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 
-import { ISimulation } from '@/lib/constants';
+import { ISimulation } from '../lib/constants';
 
 interface SimulationTabProps {
     simulation: ISimulation;

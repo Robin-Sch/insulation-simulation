@@ -8,8 +8,8 @@ import {
     PlaneGeometry,
 } from 'three';
 
-import { airConductivity, getInsulation } from '@/lib/constants';
-import { InsulationSimulationConfig } from '@/lib/simulations/insulationSimulation';
+import { airConductivity, getInsulation } from '../../lib/constants';
+import { InsulationSimulationConfig } from '../../lib/simulations/insulationSimulation';
 
 function insideHouse(
     x: number,
