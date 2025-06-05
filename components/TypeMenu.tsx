@@ -35,7 +35,7 @@ export const TypeMenu = ({ onSelectType }: TypeMenuProps) => {
                 className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center"
             >
                 <PlusIcon className="w-4 h-4 mr-1" />
-                <span>New</span>
+                <span>New tab</span>
             </button>
 
             {isOpen && (
