@@ -50,18 +50,18 @@ const options = {
                 },
             },
         },
-        scales: {
-            y: {
-                title: {
-                    display: true,
-                    text: 'Temperature (°C)',
-                },
+    },
+    scales: {
+        y: {
+            title: {
+                display: true,
+                text: 'Temperature (°C)',
             },
-            x: {
-                title: {
-                    display: true,
-                    text: 'Time',
-                },
+        },
+        x: {
+            title: {
+                display: true,
+                text: 'Time',
             },
         },
     },
