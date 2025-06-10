@@ -54,7 +54,9 @@ export default function Renderer({ simulation }: { simulation: ISimulation }) {
                         makeDefault
                         target={[0, 0, 0]}
                         enableZoom={true}
-                        autoRotate={true}
+                        autoRotate={
+                            (simulation as InsulationSimulation).config.rotate
+                        }
                         autoRotateSpeed={1}
                     />
                     {(simulation as InsulationSimulation).config.showFps && (

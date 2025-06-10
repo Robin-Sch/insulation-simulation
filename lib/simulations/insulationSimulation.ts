@@ -2,6 +2,7 @@ import { InsulationType, ISimulation } from '../constants';
 
 export interface InsulationSimulationConfig {
     showHouse: boolean;
+    rotate: boolean;
     showGrid: boolean;
     showFps: boolean;
     running: boolean;
