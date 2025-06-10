@@ -112,12 +112,12 @@ export default function InsulationGraph_Controls({
 
             <Slider
                 name="Duration"
-                min={60}
+                min={60 * 5}
                 max={60 * 60 * 24 * 1.5}
                 step={60 * 5}
                 value={config.duration}
                 help="Duration of the graph/simulation"
-                unit={secondsToHms}
+                unit={(value) => secondsToHms(value, false)}
                 onChange={(value) => handleConfigChange('duration', value)}
             />
 

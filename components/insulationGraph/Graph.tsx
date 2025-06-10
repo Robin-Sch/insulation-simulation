@@ -44,12 +44,23 @@ const options = {
         },
         tooltip: {
             callbacks: {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                label: (context: any) => {
-                    return `${secondsToHms(context.dataset.label)}: ${context.parsed.y.toFixed(2)}°C`;
+                title: (labels: { label: string }[]) => {
+                    const label = parseInt(labels[0].label);
+                    return `${secondsToHms(label, false)}`;
+                },
+                label: (context: {
+                    dataset: { label?: string };
+                    parsed: { y: number };
+                }) => {
+                    console.log(context);
+                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}°C`;
                 },
             },
         },
+    },
+    interaction: {
+        intersect: false, // show tooltip even when not exactly hovering on line
+        mode: 'index' as const, // show all tooltips at the same time
     },
     scales: {
         y: {
@@ -61,7 +72,14 @@ const options = {
         x: {
             title: {
                 display: true,
-                text: 'Time',
+                text: 'Time elapsed (hh:mm:ss)',
+            },
+            ticks: {
+                callback(index: string | number): string {
+                    // @ts-expect-error it does exists on config
+                    const value = this.getLabelForValue(index);
+                    return `${secondsToHms(value, true)}`;
+                },
             },
         },
     },
@@ -135,7 +153,6 @@ export default function InsulationGraph_Graph({
             totalTimeS: config.duration,
         });
 
-        const labels = timeSeriesS.map((time) => secondsToHms(time));
         const datasets = nodeResults.map((nodeResult) => ({
             label: nodeResult.node.name,
             data: nodeResult.tempDegC,
@@ -147,7 +164,7 @@ export default function InsulationGraph_Graph({
                           .color,
         }));
         setData({
-            labels,
+            labels: timeSeriesS,
             datasets,
         });
         setBoundaryTemp(
