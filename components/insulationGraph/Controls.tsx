@@ -9,6 +9,7 @@ import {
     InsulationGraphLayer,
     secondsToHms,
 } from '../../lib/simulations/insulationGraph';
+import InfoButton from '../controls/InfoButton';
 
 export default function InsulationGraph_Controls({
     config,
@@ -79,13 +80,7 @@ export default function InsulationGraph_Controls({
         <>
             <h2 className="text-2xl font-bold mb-4">Controls</h2>
             <div className="mt-4 flex gap-2">
-                <button
-                    onClick={() => setShowHelp(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded"
-                    title="Information"
-                >
-                    Info
-                </button>
+                <InfoButton onClick={setShowHelp} />
             </div>
 
             <Slider

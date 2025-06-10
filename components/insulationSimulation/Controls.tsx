@@ -9,6 +9,7 @@ import {
     InsulationType,
 } from '../../lib/constants';
 import { InsulationSimulationConfig } from '../../lib/simulations/insulationSimulation';
+import InfoButton from '../controls/InfoButton';
 
 export default function InsulationSimulation_Controls({
     config,
@@ -71,16 +72,10 @@ export default function InsulationSimulation_Controls({
                     }
                     className={`${config.running ? 'bg-red-600' : 'bg-blue-600'} ${config.running ? 'hover:bg-red-700' : 'hover:bg-blue-700'} text-white px-4 py-2 rounded flex-1`}
                 >
-                    {config.running ? 'Stop simulation' : 'Start simulation'}
+                    {config.running ? 'Stop' : 'Start'}
                 </button>
 
-                <button
-                    onClick={() => setShowHelp(true)}
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded"
-                    title="Simulation Information"
-                >
-                    Info
-                </button>
+                <InfoButton onClick={setShowHelp} />
             </div>
 
             <Select
