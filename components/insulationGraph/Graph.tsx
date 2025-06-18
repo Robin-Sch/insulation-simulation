@@ -108,8 +108,7 @@ export default function InsulationGraph_Graph({
             ...config.layers.map((layer) =>
                 makeNode({
                     name: layer.material,
-                    temperatureDegC:
-                        (config.insideTemp + config.outsideTemp) / 2,
+                    temperatureDegC: config.insideTemp,
                     capacitanceJPerDegK: 10000,
                     powerGenW: 0,
                     isBoundary: false,

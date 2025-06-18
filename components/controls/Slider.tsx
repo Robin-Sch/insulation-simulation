@@ -1,3 +1,5 @@
+import Tooltip from './Tooltip';
+
 export default function Slider({
     name,
     min,
@@ -22,12 +24,7 @@ export default function Slider({
             <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium">
                     {name}
-                    <span className="help-tooltip group relative ml-1">
-                        <span className="text-xs cursor-help"> (?)</span>
-                        <span className="help-tooltip-text hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-xs bg-gray-800 text-white rounded shadow-lg">
-                            {help}
-                        </span>
-                    </span>
+                    <Tooltip help={help} />
                 </label>
                 <span className="text-sm font-semibold">{unit(value)}</span>
             </div>

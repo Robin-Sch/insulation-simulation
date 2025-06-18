@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { getInsulation } from '../../lib/constants';
-import { InsulationGraphConfig } from '../../lib/simulations/insulationGraph';
+import {
+    InsulationGraphConfig,
+    secondsToHms,
+} from '../../lib/simulations/insulationGraph';
+import Tooltip from '../controls/Tooltip';
 
 export default function InsulationGraph_Layers({
     config,
@@ -47,11 +51,12 @@ export default function InsulationGraph_Layers({
             </div>
 
             <div className="flex items-center">
-                <div className="h-full flex items-center justify-end text-black font-bold border-r border-white relative group:">
-                    <span className="text-xs p-1 text-right">
-                        {(boundaryTemp[0] || 0).toFixed(2)}°C
-                    </span>
-                </div>
+                <label className="flex items-center font-bold text-xs p-1">
+                    {(boundaryTemp[0] || 0).toFixed(2)}°C
+                    <Tooltip
+                        help={`Inside temp after ${secondsToHms(config.duration, false)}`}
+                    />
+                </label>
 
                 {config.layers.map((layer, i) => {
                     const width = (layer.thickness / totalThick) * 100;
