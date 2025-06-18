@@ -55,17 +55,25 @@ export default function InsulationGraph_Controls({
         return (
             <div className="rounded-lg">
                 <p className="mb-4">
-                    This graph shows the temperature of the inside of the house
-                    (left side) and of each insulation material (over time). It
-                    is based on the work of{' '}
+                    At the top you can see a side view of your wall seeing the
+                    thickness and what type of insulation you have. Below that
+                    it shows the temperature in the house and the temperature of
+                    each insulation layer.
+                    <br />
+                    <br />
+                    The graph in the middle shows the temperature of the inside
+                    of the house (left side) and of each insulation material
+                    (over time). It is based on the work of{' '}
                     <a href="https://theleo.zone/thermal-model/">
                         http://thermalmodel.com/
                     </a>
                     , which explains how it works in depth under the
-                    &quot;Theory&quot; button. Note that we only use thermal
-                    conductivity and do not use convection nor radiation, which
-                    limits the usefulness. Nonetheless, it allows you to easily
-                    compare different types of insulation materials.
+                    &quot;Theory&quot; button.
+                    <br />
+                    Note that we only use thermal conductivity and do not use
+                    convection nor radiation, which limits the real-life
+                    accuracy. Nonetheless, it allows you to easily compare
+                    different types of insulation materials.
                 </p>
                 <button
                     onClick={() => setShowHelp(false)}
