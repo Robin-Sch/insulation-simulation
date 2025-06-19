@@ -1,5 +1,10 @@
 export const INSULATION_TYPES = [
     {
+        name: 'Cellulose Pulp',
+        color: '#8FA9FD', // Light blue-purpleish
+        conductivity: 0.06,
+    },
+    {
         name: 'Molded Expanded Polystyrene',
         color: '#1E88E5', // Bright blue
         conductivity: 0.046, // Average of 0.037–0.055

@@ -19,9 +19,8 @@ export default function InsulationGraph_Controls({
     onConfigChange: (updates: Partial<InsulationGraphConfig>) => void;
 }) {
     const [showHelp, setShowHelp] = useState(false);
-    const [newMaterial, setNewMaterial] = useState<InsulationType>(
-        'Molded Expanded Polystyrene'
-    );
+    const [newMaterial, setNewMaterial] =
+        useState<InsulationType>('Cellulose Pulp');
     const [newThickness, setNewThickness] = useState(50);
 
     const handleLayerChange = <K extends keyof InsulationGraphLayer>(
